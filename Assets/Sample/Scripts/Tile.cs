@@ -23,6 +23,13 @@ public class Tile : MonoBehaviour
 
     public Material material;
     public GameObject tile;
+
+
+
+    //For A*
+    public float f = 0;
+    public float g = 0;
+    public float h = 0;
     void Start()
     {
     }
@@ -145,20 +152,20 @@ public class Tile : MonoBehaviour
         visited = false;
         parent = null;
         distance = 0;
+
+        f = g = h = 0;
     }
-    public void Findneighbors(float jumpheight)
+    public void Findneighbors(float jumpheight, Tile target)
     {
         Reset();
-        print("Find");
-        CheckTile(Vector3.forward, jumpheight);
-        CheckTile(Vector3.right, jumpheight);
-        CheckTile(-Vector3.forward, jumpheight);
-        CheckTile(-Vector3.right, jumpheight);
+        CheckTile(Vector3.forward, jumpheight, target);
+        CheckTile(Vector3.right, jumpheight,target);
+        CheckTile(-Vector3.forward, jumpheight,target);
+        CheckTile(-Vector3.right, jumpheight,target);
     }
 
-    public void CheckTile(Vector3 direction, float jumpHeight)
+    public void CheckTile(Vector3 direction, float jumpHeight, Tile target)
     {
-        print("Check");
         Vector3 halfExtents = new Vector3(0.25f, (1 + jumpHeight) / 2, 0.25f);
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents);
 
@@ -171,11 +178,15 @@ public class Tile : MonoBehaviour
                 {
                     RaycastHit hit;
 
+                    adjacencyList.Add(tile);
 
+                    
+                }
+                if (tile == target)
+                {
                     adjacencyList.Add(tile);
 
                 }
-                
             }
         }
     }

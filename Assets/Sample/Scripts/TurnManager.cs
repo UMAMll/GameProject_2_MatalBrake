@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Xml.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +28,7 @@ public class TurnManager : MonoBehaviour
     public int currentCMOpoint;
 
     public bool HaveLeader;
-
+    public int EnemyAt;
     //public LayerMask clickableLayers;
     public static TurnManager Instance
     {
@@ -116,19 +117,20 @@ public class TurnManager : MonoBehaviour
         {
             EnemyTurn = true;
             PlayerTurn = false;
-
-            StartCoroutine(waitForEnemyTurn());
+            ReMoveEnemyTurn();
+            
+            AddEnemyTurn();
         }
     }
     //
-    IEnumerator waitForEnemyTurn()
+   /* IEnumerator waitForEnemyTurn()
     {
         yield return new WaitForSeconds(3);
         Debug.Log("Enemy End Turn");
         EnemyTurn=false;
         PlayerTurn = true;
         StartNewPlayerTurn();
-    }
+    }*/
     public void UpDateEnemys()
     {
         EnemyUnits.Clear();
@@ -136,6 +138,15 @@ public class TurnManager : MonoBehaviour
         foreach (GameObject e in enemyUnits)
         {
             EnemyUnits.Add(e);
+        }
+        for (int i = 0; i < EnemyUnits.Count; i++)
+        {
+           
+            EnemyUnit enemy = EnemyUnits[i].GetComponent<EnemyUnit>();
+            if (enemy != null)
+            {
+                enemy.EnemyNumber = i;
+            }
         }
     }
     public void ReMoveAttackableEnemy()
@@ -304,5 +315,26 @@ public class TurnManager : MonoBehaviour
         {
             h.GetComponent<HealScript>().CuldownTurn--;
         }
+    }
+
+    public void AddEnemyTurn()
+    {
+        print("Add Enemy 0 turn");
+        EnemyUnits[0].GetComponent<EnemyUnit>().IsMyturn = true;
+    }
+    public void ReMoveEnemyTurn()
+    {
+        foreach (GameObject e in EnemyUnits)
+        {
+            e.GetComponent<EnemyUnit>().IsMyturn = false;
+        }
+    }
+    public void NextEnemyTurn(int NextEnemy)
+    {
+        if(NextEnemy >= EnemyUnits.Count)
+        {
+            return;
+        }
+        EnemyUnits[NextEnemy].GetComponent<EnemyUnit>().IsMyturn = true;
     }
 }
