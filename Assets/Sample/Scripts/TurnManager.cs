@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
+    public int turn;
     public bool IsStartGame;
     private static TurnManager instance;
     public List<GameObject> playerunit = new List<GameObject>();
@@ -115,11 +116,17 @@ public class TurnManager : MonoBehaviour
     {
         if (PlayerTurn)
         {
+            print("Click EndTurn" + turn);
             EnemyTurn = true;
             PlayerTurn = false;
             ReMoveEnemyTurn();
-            
             AddEnemyTurn();
+
+            if (turn > 1)
+            {
+                StartNewEnemyTurn();
+            }
+
         }
     }
     //
@@ -322,6 +329,16 @@ public class TurnManager : MonoBehaviour
         print("Add Enemy 0 turn");
         EnemyUnits[0].GetComponent<EnemyUnit>().IsMyturn = true;
     }
+    public void StartNewEnemyTurn()
+    {
+        foreach (GameObject e in EnemyUnits)
+        {
+            EnemyUnit enemy = e.GetComponent<EnemyUnit>();
+            enemy.currentSkill1CD--;
+            enemy.currentSkill2CD--;
+            enemy.currentWalkstack = enemy.WalkStack;
+        }
+    }
     public void ReMoveEnemyTurn()
     {
         foreach (GameObject e in EnemyUnits)
@@ -333,6 +350,11 @@ public class TurnManager : MonoBehaviour
     {
         if(NextEnemy >= EnemyUnits.Count)
         {
+            EnemyTurn = false;
+            PlayerTurn = true;
+            ReMoveEnemyTurn();
+            StartNewPlayerTurn();
+            turn++;
             return;
         }
         EnemyUnits[NextEnemy].GetComponent<EnemyUnit>().IsMyturn = true;

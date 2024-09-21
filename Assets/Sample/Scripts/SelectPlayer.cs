@@ -38,6 +38,7 @@ public class SelectPlayer : MonoBehaviour
         TurnManager.Instance.IsStartGame = true;
         TurnManager.Instance.PlayerTurn = true;
         TurnManager.Instance.EnemyTurn = false;
+        TurnManager.Instance.turn = 1;
         Destroy(startgameObject);
     }
 

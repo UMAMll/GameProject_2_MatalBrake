@@ -8,71 +8,57 @@ using UnityEngine.UI;
 public class EnemyUnit : TacticSystem
 {
     public GameObject target;
+    public GameObject StandPosition;
     public Tile targetTile;
 
     public int EnemyNumber;
 
+    public float FindArea;
+    public float AttackArea;
+
     public bool CanMove;
-    public bool CanAttack;
+    public bool CanAttack1;
+    public bool CanAttack2;
 
     //heath
     public Image[] Heart;
     public Sprite fullhealth;
     public Sprite emptyhealth;
 
-    private void Start()
+    public List<GameObject> playersFound = new List<GameObject>();
+    public List<GameObject> playersCanAttack = new List<GameObject>();
+    
+    public void ManageSkillCD()
     {
-        Init();
-    }
-    private void Update()
-    {
-        if (!TurnManager.Instance.IsStartGame)
+        if(currentSkill1CD <=0)
         {
-            return;
+            currentSkill1CD = 0;
         }
-        if (TurnManager.Instance.EnemyTurn)
-        {
-            
-            if (IsMyturn)
-            {
-                if(currentWalkstack <=0)
-                {
-                    CanMove = false;
-                }
-                else if(currentWalkstack >0)
-                {
-                    CanMove=true;
-                }
-                if (CanMove && IsMyturn)
-                {
-                    if (!moving)
-                    {
-                        FindNearestTarget();
-                        CalculatePath();
-                        FindSelectableTilesWalk();
-                        actualTargetTile.target = true;
-                    }
-                    else
-                    {
-                        Move();
-                    }
-                }
-                if (!CanMove && !CanAttack)
-                {
-                    TurnManager.Instance.ReMoveEnemyTurn();
-                    TurnManager.Instance.NextEnemyTurn(EnemyNumber +1);
-                }
-            }
-            /*if(!CanMove && !CanAttack)
-            {
-                TurnManager.Instance.ReMoveEnemyTurn();
-            }*/
-        }
-        // health
-        HealthManage();
-    }
 
-    void HealthManage()
+        if(currentSkill2CD <= 0)
+        {
+            currentSkill2CD = 0;
+        }
+
+        if (currentSkill1CD == 0 && currentSkill1CD != Skill1CD)
+        {
+            CanAttack1 = true;
+        }
+        else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD)
+        {
+            CanAttack1 = false;
+        }
+
+        if (currentSkill2CD == 0 && currentSkill2CD != Skill2CD)
+        {
+            CanAttack2 = true;
+        }
+        else if (currentSkill2CD != 0 || currentSkill2CD == Skill2CD)
+        {
+            CanAttack2 = false;
+        }
+    }
+    public void HealthManage()
     {
         if (currentHp <= 0)
         {
@@ -103,16 +89,68 @@ public class EnemyUnit : TacticSystem
             }
         }
     }
-    void CalculatePath()
+    public void OverLabFindArea()
+    {
+        playersFound.Clear();
+        float sphereRadius = FindArea;
+        Vector3 sphereCenter = transform.position;
+        Collider[] hitColliders = Physics.OverlapSphere(sphereCenter, sphereRadius);
+        foreach (var collider in hitColliders)
+        {
+            if (collider.gameObject.CompareTag("Player"))
+            {
+                GameObject player = collider.gameObject;
+                playersFound.Add(player);
+                playersFound = RemoveDuplicateItems(playersFound);
+            }
+        }
+    }
+    public void OverLabAttackArea()
+    {
+        playersCanAttack.Clear();
+        float sphereRadius = AttackArea;
+        Vector3 sphereCenter = transform.position;
+        Collider[] hitColliders = Physics.OverlapSphere(sphereCenter, sphereRadius);
+        foreach (var collider in hitColliders)
+        {
+            if (collider.gameObject.CompareTag("Player"))
+            {
+                GameObject player = collider.gameObject;
+                playersCanAttack.Add(player);
+                playersCanAttack = RemoveDuplicateItems(playersCanAttack);
+            }
+        }
+    }
+
+    public void Attack1()
+    {
+        if (CanAttack1)
+        {
+            if(playersCanAttack.Count > 0)
+            {
+                if(currentSkill1CD == 0)
+                {
+                    PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
+                    playertarget.currentHp -= 2;
+                    currentSkill1CD = Skill1CD;
+                }
+            }
+        }
+    }
+    List<T> RemoveDuplicateItems<T>(List<T> list)
+    {
+        HashSet<T> set = new HashSet<T>(list);
+        return new List<T>(set);
+    }
+    public void CalculatePath()
     {
         targetTile = GetTargetTile(target);
         FindPath(targetTile);
     }
-
-    void FindNearestTarget()
+    public GameObject FindNearestAttackTarget()
     {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
 
+        GameObject[] targets = playersCanAttack.ToArray();
         GameObject nearest = null;
         float distance = Mathf.Infinity;
 
@@ -127,7 +165,34 @@ public class EnemyUnit : TacticSystem
             }
         }
 
-        target = nearest;
+        return nearest;
+    }
+    public void FindNearestTarget()
+    {
+        if(playersFound.Count == 0)
+        {
+            target = StandPosition;
+        }
+
+        if (playersFound.Count > 0)
+        {
+            GameObject[] targets = playersFound.ToArray();
+            GameObject nearest = null;
+            float distance = Mathf.Infinity;
+
+            foreach (GameObject obj in targets)
+            {
+                float d = Vector3.Distance(transform.position, obj.transform.position);
+
+                if (d < distance)
+                {
+                    distance = d;
+                    nearest = obj;
+                }
+            }
+
+            target = nearest;
+        }
     }
     public void OnTriggerStay(Collider other)
     {
