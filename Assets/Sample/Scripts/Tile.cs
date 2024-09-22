@@ -30,9 +30,6 @@ public class Tile : MonoBehaviour
     public float f = 0;
     public float g = 0;
     public float h = 0;
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()

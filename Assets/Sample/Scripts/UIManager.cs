@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     public GameObject ProfilePanel;
     public Image Picture;
     public TextMeshProUGUI nametext;
-
+    public GameObject ActionpointPanel;
     public Image[] Heart;
     public Sprite fullhealth;
     public Sprite emptyhealth;

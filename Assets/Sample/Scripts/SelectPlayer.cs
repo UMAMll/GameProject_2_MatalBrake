@@ -10,7 +10,6 @@ public class SelectPlayer : MonoBehaviour
     public GameObject startgameObject;
     public Button startGamebutton;
     public GameObject selectCanvas;
-    public GameObject ActionCanvas;
     public GameObject selectStand;
     public GameObject[] PlayerPrefabs;
     public Button[] PlayerButton;
@@ -18,7 +17,6 @@ public class SelectPlayer : MonoBehaviour
     void Start()
     {
         startgameObject.SetActive(false);
-        ActionCanvas.SetActive(false);
         PlayerButton[0].onClick.AddListener(() => PlayerGenerate(0));
         PlayerButton[1].onClick.AddListener(() => PlayerGenerate(1));
         PlayerButton[2].onClick.AddListener(() => PlayerGenerate(2));
@@ -34,7 +32,6 @@ public class SelectPlayer : MonoBehaviour
     private void StartGame()
     {
         Destroy(selectStand);
-        ActionCanvas.SetActive(true);
         TurnManager.Instance.IsStartGame = true;
         TurnManager.Instance.PlayerTurn = true;
         TurnManager.Instance.EnemyTurn = false;

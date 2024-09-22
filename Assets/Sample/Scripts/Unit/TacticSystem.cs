@@ -396,7 +396,21 @@ public class TacticSystem : MonoBehaviour
 
         return lowest;
     }
+    protected Tile FindHighestF(List<Tile> list)
+    {
+        Tile highest = list[0];
 
+        foreach (Tile t in list)
+        {
+            if (t.f > highest.f)
+            {
+                highest = t;
+            }
+        }
+        list.Remove(highest);
+
+        return highest;
+    }
     protected Tile FindEndTile(Tile t)
     {
         Stack<Tile> tempPath = new Stack<Tile>();
@@ -421,7 +435,65 @@ public class TacticSystem : MonoBehaviour
 
         return endTile;
     }
+    protected void FindPathWithHighest(Tile target)
+    {
+        ComputeAdjecencyLists(target);
+        GetCurrentTile();
 
+        List<Tile> openList = new List<Tile>();
+        List<Tile> closedList = new List<Tile>();
+
+        openList.Add(currenttile);
+        //currentTile.parent = ??
+        currenttile.h = Vector3.Distance(currenttile.transform.position, target.transform.position);
+        currenttile.f = currenttile.h;
+
+        while (openList.Count > 0)
+        {
+            Tile t = FindHighestF(openList);
+
+            closedList.Add(t);
+
+            if (t == target)
+            {
+                actualTargetTile = FindEndTile(t);
+                MovetoTile(actualTargetTile);
+                return;
+            }
+
+            foreach (Tile tile in t.adjacencyList)
+            {
+                if (closedList.Contains(tile))
+                {
+                    //Do nothing, already processed
+                }
+                else if (openList.Contains(tile))
+                {
+                    float tempG = t.g + Vector3.Distance(tile.transform.position, t.transform.position);
+
+                    if (tempG < tile.g)
+                    {
+                        tile.parent = t;
+
+                        tile.g = tempG;
+                        tile.f = tile.g + tile.h;
+                    }
+                }
+                else
+                {
+                    tile.parent = t;
+
+                    tile.g = t.g + Vector3.Distance(tile.transform.position, t.transform.position);
+                    tile.h = Vector3.Distance(tile.transform.position, target.transform.position);
+                    tile.f = tile.g + tile.h;
+
+                    openList.Add(tile);
+                }
+            }
+        }
+
+
+    }
     protected void FindPath(Tile target)
     {
         ComputeAdjecencyLists(target);
@@ -432,6 +504,7 @@ public class TacticSystem : MonoBehaviour
 
         openList.Add(currenttile);
         //currentTile.parent = ??
+        
         currenttile.h = Vector3.Distance(currenttile.transform.position, target.transform.position);
         currenttile.f = currenttile.h;
 

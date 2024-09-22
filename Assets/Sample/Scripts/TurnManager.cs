@@ -259,13 +259,23 @@ public class TurnManager : MonoBehaviour
                 comandorder[i].enabled = false;
             }
         }
-
+        if (PlayerTurn)
+        {
+            print("PlayerTurn");
+            UIManager.Instance.ActionpointPanel.SetActive(true);
+        }
+        if (EnemyTurn)
+        {
+            print("EnemyTurn");
+            UIManager.Instance.ActionpointPanel.SetActive(false);
+        }
     }
 
     public Vector3 BarrierLook()
     {
         if (PlayerTurn)
         {
+
             foreach (GameObject p in playerunit)
             {
                 PlayerUnit player = p.GetComponent<PlayerUnit>();
@@ -281,6 +291,7 @@ public class TurnManager : MonoBehaviour
         }
         if(EnemyTurn)
         {
+            
             UpDateEnemys();
             foreach (GameObject E in EnemyUnits)
             {

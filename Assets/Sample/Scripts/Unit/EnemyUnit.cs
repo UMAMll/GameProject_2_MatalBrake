@@ -14,6 +14,8 @@ public class EnemyUnit : TacticSystem
     public int EnemyNumber;
 
     public float FindArea;
+    public float EscapeArea;
+    public bool PlayerNearest;
     public float AttackArea;
 
     public bool CanMove;
@@ -21,11 +23,13 @@ public class EnemyUnit : TacticSystem
     public bool CanAttack2;
 
     //heath
+    public bool LowHealth;
     public Image[] Heart;
     public Sprite fullhealth;
     public Sprite emptyhealth;
 
     public List<GameObject> playersFound = new List<GameObject>();
+    public List<GameObject> playersNearsetArea = new List<GameObject>();
     public List<GameObject> playersCanAttack = new List<GameObject>();
     
     public void ManageSkillCD()
@@ -42,7 +46,15 @@ public class EnemyUnit : TacticSystem
 
         if (currentSkill1CD == 0 && currentSkill1CD != Skill1CD)
         {
-            CanAttack1 = true;
+            if(!LowHealth)
+            {
+                CanAttack1 = true;
+            }
+            if(LowHealth)
+            {
+                CanAttack1 = false;
+            }
+            
         }
         else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD)
         {
@@ -60,6 +72,15 @@ public class EnemyUnit : TacticSystem
     }
     public void HealthManage()
     {
+        if(currentHp <= HpPoint / 2)
+        {
+            LowHealth = true;
+        }
+        else if(currentHp > HpPoint / 2)
+        {
+            LowHealth = false;
+        }
+
         if (currentHp <= 0)
         {
             StartCoroutine(WaitForDead());
@@ -89,6 +110,24 @@ public class EnemyUnit : TacticSystem
             }
         }
     }
+    public void OverLabEscapeArea()
+    {
+        playersNearsetArea.Clear();
+        float sphereRadius = EscapeArea;
+        Vector3 sphereCenter = transform.position;
+        Collider[] hitColliders = Physics.OverlapSphere(sphereCenter, sphereRadius);
+        foreach (var collider in hitColliders)
+        {
+            if (collider.gameObject.CompareTag("Player"))
+            {
+                GameObject player = collider.gameObject;
+                playersNearsetArea.Add(player);
+                playersNearsetArea = RemoveDuplicateItems(playersNearsetArea);
+            }
+        }
+        if(playersNearsetArea.Count > 0) { PlayerNearest = true; }
+        else { PlayerNearest = false; }
+    }
     public void OverLabFindArea()
     {
         playersFound.Clear();
@@ -104,6 +143,7 @@ public class EnemyUnit : TacticSystem
                 playersFound = RemoveDuplicateItems(playersFound);
             }
         }
+
     }
     public void OverLabAttackArea()
     {
@@ -122,30 +162,20 @@ public class EnemyUnit : TacticSystem
         }
     }
 
-    public void Attack1()
-    {
-        if (CanAttack1)
-        {
-            if(playersCanAttack.Count > 0)
-            {
-                if(currentSkill1CD == 0)
-                {
-                    PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
-                    playertarget.currentHp -= 2;
-                    currentSkill1CD = Skill1CD;
-                }
-            }
-        }
-    }
     List<T> RemoveDuplicateItems<T>(List<T> list)
     {
         HashSet<T> set = new HashSet<T>(list);
         return new List<T>(set);
     }
-    public void CalculatePath()
+    public void CalculatePathFollowPlayer()
     {
         targetTile = GetTargetTile(target);
         FindPath(targetTile);
+    }
+    public void CalculatePathEscapePlayer()
+    {
+        targetTile = GetTargetTile(target);
+        FindPathWithHighest(targetTile);
     }
     public GameObject FindNearestAttackTarget()
     {

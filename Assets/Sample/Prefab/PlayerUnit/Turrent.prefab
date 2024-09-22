@@ -405,8 +405,8 @@ MonoBehaviour:
   movearea: 2
   LeaderArea: 5
   movespeed: 3
-  HpPoint: 10
-  currentHp: 10
+  HpPoint: 20
+  currentHp: 20
   currentstatus: 0
   attackArea1: 7
   attackArea2: 7
@@ -429,6 +429,7 @@ MonoBehaviour:
   objectsInColliderskill1: []
   Skill2Colider: {fileID: 6990601889623810195}
   objectsInColliderskill2: []
+  actualTargetTile: {fileID: 0}
   actionCanves: {fileID: 1856593797429248335}
   walkButton: {fileID: 7502893257374860552}
   skill1Button: {fileID: 8804602317147100995}

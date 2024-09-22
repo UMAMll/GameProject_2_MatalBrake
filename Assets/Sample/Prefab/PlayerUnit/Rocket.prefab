@@ -428,6 +428,7 @@ MonoBehaviour:
   objectsInColliderskill1: []
   Skill2Colider: {fileID: 0}
   objectsInColliderskill2: []
+  actualTargetTile: {fileID: 0}
   actionCanves: {fileID: 1856593797429248335}
   walkButton: {fileID: 7502893257374860552}
   skill1Button: {fileID: 8804602317147100995}

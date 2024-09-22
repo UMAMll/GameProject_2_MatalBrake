@@ -191,9 +191,10 @@ public class PlayerUnit : TacticSystem
     }*/
     public IEnumerator WaitForDead()
     {
-        print("Unit is Dead");
-        yield return new WaitForSeconds(2);
         Destroy(gameObject);
+        print("Unit is Dead");
+        yield return new WaitForSeconds(0);
+        //Destroy(gameObject);
 
     }
     private void OnMouseUp()
