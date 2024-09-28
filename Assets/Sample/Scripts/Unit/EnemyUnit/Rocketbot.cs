@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class Boombot : EnemyUnit
+public class Rocketbot : EnemyUnit
 {
-
     private void Start()
     {
         StandPosition = FindNearestStandTarget();
@@ -24,6 +24,15 @@ public class Boombot : EnemyUnit
                 OverLabFindArea();
                 OverLabEscapeArea();
                 OverLabAttackArea();
+                if (IsCharge)
+                {
+                    CanMove = false;
+                }
+                else
+                {
+                    CanMove = true;
+                }
+
                 if (!LowHealth)
                 {
                     if (!PlayerNearest)
@@ -33,8 +42,9 @@ public class Boombot : EnemyUnit
                             Invoke("Attack1", 3.0f);
                         }
                     }
-                    
+
                 }
+
                 if (currentWalkstack <= 0)
                 {
                     CanMove = false;
@@ -48,13 +58,13 @@ public class Boombot : EnemyUnit
 
                 if (CanMove && IsMyturn)
                 {
-                    if ((!CanAttack1 || playersCanAttack.Count == 0)|| PlayerNearest)
+                    if ((!CanAttack1 || playersCanAttack.Count == 0) || PlayerNearest)
                     {
                         if (!moving)
                         {
                             FindNearestTarget();
                             if (PlayerNearest)
-                            { 
+                            {
                                 CalculatePathEscapePlayer();
                             }
                             else if (!PlayerNearest)
@@ -76,9 +86,9 @@ public class Boombot : EnemyUnit
                             Move();
                         }
                     }
-                    
+
                 }
-                if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
+                if ((!CanMove) && ( IsCharge || !CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
                 {
                     TurnManager.Instance.ReMoveEnemyTurn();
                     TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
@@ -91,6 +101,8 @@ public class Boombot : EnemyUnit
         HealthManage();
     }
 
+    public List<Tile> targetAttack = new List<Tile>();
+    
     public void Attack1()
     {
         if (CanAttack1)
@@ -99,12 +111,52 @@ public class Boombot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
-                    PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
-                    transform.LookAt(playertarget.transform.position);
-                    playertarget.currentHp -= 3;
-                    currentWalkstack = 0;
-                    moving = false;
-                    currentSkill1CD = Skill1CD;
+                    if(playersCanAttack.Count < 4)
+                    {
+                        currentSkill1CD = Skill1CD;
+                        CanAttack1 = false;
+                    }
+                    if (!IsCharge && playersCanAttack.Count >= 4)
+                    {
+                        RaycastHit hit;
+                        for (int i = 0; i < playersCanAttack.Count; i++)
+                        {
+
+                            if (Physics.Raycast(playersCanAttack[i].transform.position, -Vector3.up, out hit, 1))
+                            {
+                                Tile tiles;
+                                tiles = hit.collider.GetComponent<Tile>();
+                                targetAttack.Add(tiles);
+                            }
+                        }
+                        print("Charge");
+                        currentWalkstack = 0;
+                        IsCharge = true;
+                        Chargeturn = MaxChargeturn;
+                    }
+                    if (IsCharge && Chargeturn == 0)
+                    {
+                        RaycastHit hit;
+                        for (int i = 0; i < targetAttack.Count; i++)
+                        {
+
+                            if (Physics.Raycast(targetAttack[i].transform.position, Vector3.up, out hit, 1))
+                            {
+                                if (hit.collider.CompareTag("Player"))
+                                {
+                                    PlayerUnit targetUnit = hit.collider.GetComponent<PlayerUnit>();
+                                    targetUnit.currentHp -= 5;
+
+                                }
+                            }
+                        }
+                        IsCharge = false;
+                        targetAttack.Clear();
+                        print("Attack");
+                        currentWalkstack = 0;
+                        moving = false;
+                        currentSkill1CD = Skill1CD;
+                    }
                 }
             }
         }

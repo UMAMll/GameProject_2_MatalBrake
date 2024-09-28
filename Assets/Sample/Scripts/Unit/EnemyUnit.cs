@@ -31,7 +31,12 @@ public class EnemyUnit : TacticSystem
     public List<GameObject> playersFound = new List<GameObject>();
     public List<GameObject> playersNearsetArea = new List<GameObject>();
     public List<GameObject> playersCanAttack = new List<GameObject>();
-    
+
+    [Header("EnemyCharge")]
+    public bool IsCharge;
+    public int MaxChargeturn;
+    public int Chargeturn;
+
     public void ManageSkillCD()
     {
         if(currentSkill1CD <=0)
@@ -169,11 +174,13 @@ public class EnemyUnit : TacticSystem
     }
     public void CalculatePathFollowPlayer()
     {
+        targetTile = null;
         targetTile = GetTargetTile(target);
         FindPath(targetTile);
     }
     public void CalculatePathEscapePlayer()
     {
+        targetTile = null;
         targetTile = GetTargetTile(target);
         FindPathWithHighest(targetTile);
     }
@@ -223,6 +230,27 @@ public class EnemyUnit : TacticSystem
 
             target = nearest;
         }
+    }
+    public GameObject FindNearestStandTarget()
+    {
+
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Stand");
+        GameObject nearest = null;
+        float distance = Mathf.Infinity;
+
+        foreach (GameObject obj in targets)
+        {
+            float d = Vector3.Distance(transform.position, obj.transform.position);
+
+            if (d < distance)
+            {
+                distance = d;
+                nearest = obj;
+            }
+        }
+
+        return nearest;
+
     }
     public void OnTriggerStay(Collider other)
     {

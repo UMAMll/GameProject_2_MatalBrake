@@ -181,6 +181,7 @@ public class Tile : MonoBehaviour
                 }
                 if (tile == target)
                 {
+                    print(target);
                     adjacencyList.Add(tile);
 
                 }

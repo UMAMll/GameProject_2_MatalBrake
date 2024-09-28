@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Barrier
   - Heal
+  - Stand
   layers:
   - Default
   - TransparentFX

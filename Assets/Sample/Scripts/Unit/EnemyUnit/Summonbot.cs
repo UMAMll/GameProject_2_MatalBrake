@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Healbot : EnemyUnit
+public class Summonbot : EnemyUnit
 {
-    public bool IsHeal;
+    public bool IsSummon;
+    public GameObject[] summonObject;
+    public GameObject[] summonTargetpos;
     private void Start()
     {
         StandPosition = FindNearestStandTarget();
@@ -36,7 +39,6 @@ public class Healbot : EnemyUnit
                     }
 
                 }
-
                 if (currentWalkstack <= 0)
                 {
                     CanMove = false;
@@ -74,11 +76,11 @@ public class Healbot : EnemyUnit
 
                 if (currentSkill2CD == 0 && currentSkill2CD != Skill2CD)
                 {
-                    if(!IsHeal)
+                    if (!IsSummon)
                     {
                         CanAttack2 = false;
                     }
-                    if(IsHeal)
+                    if (IsSummon)
                     {
                         CanAttack2 = true;
                     }
@@ -88,19 +90,32 @@ public class Healbot : EnemyUnit
                     CanAttack2 = false;
                 }
 
+
                 if (CanMove && IsMyturn)
                 {
-                    if ((!CanAttack2 ||!CanAttack1 || playersCanAttack.Count == 0))
+                    if (!CanAttack1 || playersCanAttack.Count == 0)
                     {
+
                         if (!moving)
                         {
-                            FindNearestTarget(); 
-                            if (PlayerNearest)
+                            FindNearestTarget();
+                            if (LowHealth)
                             {
                                 CalculatePathEscapePlayer();
                             }
-                            else if (!PlayerNearest)
+                            else
                             {
+                                CalculatePathFollowPlayer();
+                            }
+                            FindSelectableTilesWalk();
+                            actualTargetTile.target = true;
+
+                        }
+                        else
+                        {
+                            if (target == null)
+                            {
+                                FindNearestTarget();
                                 if (LowHealth)
                                 {
                                     CalculatePathEscapePlayer();
@@ -109,16 +124,13 @@ public class Healbot : EnemyUnit
                                 {
                                     CalculatePathFollowPlayer();
                                 }
+                                FindSelectableTilesWalk();
+                                actualTargetTile.target = true;
                             }
-                            FindSelectableTilesWalk();
-                            actualTargetTile.target = true;
-                        }
-                        else
-                        {
                             Move();
                         }
                     }
-                    
+
 
                 }
                 if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
@@ -155,34 +167,35 @@ public class Healbot : EnemyUnit
 
     public void Attack2()
     {
-        if (currentSkill1CD == 0)
+        if (currentSkill2CD == 0)
         {
-            foreach (var target in TurnManager.Instance.EnemyUnits)
+            if(currentHp > (HpPoint/2))
             {
-
-                EnemyUnit enemyUnit = target.GetComponent<EnemyUnit>();
-
-                if (enemyUnit != null)
-                {
-                    if (enemyUnit.currentHp <= (enemyUnit.HpPoint / 2))
-                    {
-                        Healbot me = this.gameObject.GetComponent<Healbot>();
-                        me.IsHeal = true;
-                    }
-                    if (IsHeal)
-                    {
-                        if (!moving && CanAttack2)
-                        {
-                            enemyUnit.currentHp += 2;
-                            currentSkill2CD = Skill2CD;
-                        }
-
-                    }
-
-                }
+                CanAttack2 = false;
+                IsSummon = false;
             }
+
+            if (currentHp <= (HpPoint /2))
+            {
+                IsSummon = true;
+            }
+            if (IsSummon)
+            {
+                if (!moving && CanAttack2)
+                {
+                    int randomObject = Random.Range(0, summonObject.Length);
+                    int randompos = Random.Range(0, summonTargetpos.Length);
+
+                    Instantiate(summonObject[randomObject], summonTargetpos[randompos].transform.position, Quaternion.identity);
+                    currentSkill2CD = Skill2CD;
+                }
+
+            }
+
+
+
         }
     }
-        
-    
+
+
 }

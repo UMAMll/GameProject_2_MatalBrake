@@ -6,6 +6,7 @@ public class Minibot : EnemyUnit
 {
     private void Start()
     {
+        StandPosition = FindNearestStandTarget();
         Init();
     }
     private void Update()

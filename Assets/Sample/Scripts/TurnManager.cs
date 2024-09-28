@@ -348,6 +348,10 @@ public class TurnManager : MonoBehaviour
             enemy.currentSkill1CD--;
             enemy.currentSkill2CD--;
             enemy.currentWalkstack = enemy.WalkStack;
+            if(enemy.IsCharge && enemy.Chargeturn > 0)
+            {
+                enemy.Chargeturn--;
+            }
         }
     }
     public void ReMoveEnemyTurn()
