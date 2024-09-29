@@ -204,6 +204,11 @@ public class EnemyUnit : TacticSystem
 
         return nearest;
     }
+    public void FindBoss()
+    {
+        BigBossBot bosstarget = FindObjectOfType<BigBossBot>();
+        target = bosstarget.gameObject;
+    }
     public void FindNearestTarget()
     {
         if(playersFound.Count == 0)
