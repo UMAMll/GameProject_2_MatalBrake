@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     public RectTransform uiDescription;
     public TextMeshProUGUI descriptiontext;
 
+    public GameObject leaderpanel;
+    public TextMeshProUGUI leader;
 
     public bool IsShowProfile;
     public bool IsshowFollowupUI;
@@ -63,6 +65,21 @@ public class UIManager : MonoBehaviour
             uiDescription.gameObject.SetActive(false);
         }
 
+        if (!TurnManager.Instance.IsStartGame)
+        {
+            leaderpanel.SetActive(true);
+        }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            leaderpanel.SetActive(false);
+        }
+
+    }
+    public void SetLeader(string name)
+    {
+        leaderpanel.SetActive(true);
+        leader.text = name;
     }
     public void UiFollowUpMouse(string text)
     {

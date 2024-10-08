@@ -6,20 +6,34 @@ public class SelectionPlayerTile : MonoBehaviour
 {
     public Transform position;
     public SelectPlayer SelectPlayer;
+    public GameObject player;
+    public int playernum;
     void Start()
     {
         position = GetComponent<Transform>();
-        GetComponent<Renderer>().material.color = Color.red;
     }
     private void OnMouseDown()
     {
         SelectPlayer.spawnposition = position;
+        if (player != null )
+        {
+            Destroy(player);
+            SelectPlayer.Resetbutton(playernum);
+        }
+        
     }
     private void OnMouseUp()
     {
         SelectPlayer.selectCanvas.SetActive(true);
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
-        boxCollider.enabled = false;
+        SelectPlayer.standpos = gameObject.GetComponent<SelectionPlayerTile>();
+        
+        
+    }
+
+    public void SetPlayer(GameObject playerObj, int num)
+    {
+        player = playerObj;
+        playernum = num;
     }
     // Update is called once per frame
     void Update()

@@ -14,6 +14,7 @@ public class SelectPlayer : MonoBehaviour
     public GameObject[] PlayerPrefabs;
     public Button[] PlayerButton;
     public Transform spawnposition;
+    public SelectionPlayerTile standpos;
     void Start()
     {
         startgameObject.SetActive(false);
@@ -39,17 +40,29 @@ public class SelectPlayer : MonoBehaviour
         Destroy(startgameObject);
     }
 
-    public void PlayerGenerate(int i)
+    public GameObject PlayerGenerate(int i)
     {
         print("Spawn");
-        Instantiate(PlayerPrefabs[i], new Vector3(spawnposition.position.x,1.5f,spawnposition.position.z), Quaternion.identity);
+        GameObject Player = Instantiate(PlayerPrefabs[i], new Vector3(spawnposition.position.x,1.5f,spawnposition.position.z), Quaternion.identity);
+        print(Player.name);
         selectCanvas.SetActive(false);
         TurnManager.Instance.PlayerUpdate();
         TurnManager.Instance.AddCommandError();
         PlayerButton[i].interactable = false;
         startgameObject.SetActive(true);
+
+        if(standpos != null)
+        {
+            standpos.SetPlayer(Player , i);
+        }
+        return Player;
     }
 
+    public void Resetbutton(int i)
+    {
+        PlayerButton[i].interactable = true;
+    }
+    
     // Update is called once per frame
     void Update()
     {

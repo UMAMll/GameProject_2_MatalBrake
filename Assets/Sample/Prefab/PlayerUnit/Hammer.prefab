@@ -429,6 +429,7 @@ MonoBehaviour:
   objectsInColliderskill1: []
   Skill2Colider: {fileID: 6990601889623810195}
   objectsInColliderskill2: []
+  actualTargetTile: {fileID: 0}
   actionCanves: {fileID: 1856593797429248335}
   walkButton: {fileID: 7502893257374860552}
   skill1Button: {fileID: 8804602317147100995}
@@ -563,7 +564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2894700291927314425
 Transform:
   m_ObjectHideFlags: 0
@@ -598,7 +599,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 1, z: 4}
+  m_Size: {x: 4, y: 0.2, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7552863402362979484
 GameObject:

@@ -229,8 +229,13 @@ public class TurnManager : MonoBehaviour
         if (playerunit == null)
         {
             IsStartGame = false;
-        }
+            //player Lostconition
 
+        }
+        if(EnemyUnits.Count == 0)
+        {
+            //enemy lost conition
+        }
         if (currentCMOpoint > MaxCMOpoint)
         {
             currentCMOpoint = MaxCMOpoint;

@@ -199,6 +199,14 @@ public class PlayerUnit : TacticSystem
     }
     private void OnMouseUp()
     {
+        
+        if (!TurnManager.Instance.IsStartGame && !TurnManager.Instance.HaveLeader)
+        {
+            IsLeader = true;
+            TurnManager.Instance.HaveLeader = true;
+            UIManager.Instance.SetLeader(name);
+            return;
+        }
         if (!TurnManager.Instance.IsStartGame)
             return;
         TurnManager.Instance.AddCommandError();
@@ -213,10 +221,10 @@ public class PlayerUnit : TacticSystem
 
     private void OnMouseDown()
     {
-        if (!TurnManager.Instance.IsStartGame && !TurnManager.Instance.HaveLeader)
+        if (!TurnManager.Instance.IsStartGame && TurnManager.Instance.HaveLeader)
         { 
-            IsLeader = true;
-            TurnManager.Instance.HaveLeader = true;
+            IsLeader = false;
+            TurnManager.Instance.HaveLeader = false;
             return; 
         }
         if (TurnManager.Instance.PlayerTurn)
