@@ -20,8 +20,15 @@ public class HammerUnitScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -253,6 +260,7 @@ public class HammerUnitScript : PlayerUnit
                     if (CanAttack && enemy.attackable)
                     {
                         enemy.currentHp -= 4;
+                        enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
                         if (CMError)
@@ -325,7 +333,7 @@ public class HammerUnitScript : PlayerUnit
             Tile t;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "Barrier" || hit.collider.CompareTag("Enemy"))
+                if (objectsInColliderskill2.Count != 0)
                 {
                     if (CanAttack)
                     {
@@ -346,6 +354,7 @@ public class HammerUnitScript : PlayerUnit
                             {
                                 EnemyUnit unit = target.GetComponent<EnemyUnit>();
                                 unit.currentHp -= damagehit;
+                                unit.IsHit();
 
                             }
                         }

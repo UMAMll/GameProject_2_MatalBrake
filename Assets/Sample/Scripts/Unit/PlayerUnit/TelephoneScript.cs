@@ -20,8 +20,15 @@ public class TelephoneScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -274,6 +281,7 @@ public class TelephoneScript : PlayerUnit
                     {
 
                         player.SpacialCommand = true;
+                        player.IsPowerUp();
                         currentSkill2CD = Skill2CD;
                         if (CMError)
                         {

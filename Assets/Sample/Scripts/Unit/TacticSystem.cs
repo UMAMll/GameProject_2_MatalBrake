@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class TacticSystem : MonoBehaviour
 {
+    public GameObject HPCanvas;
+
     List<Tile> Selectabletiles = new List<Tile>();
     public GameObject[] tiles;
     
@@ -60,6 +63,10 @@ public class TacticSystem : MonoBehaviour
     public List<GameObject> objectsInColliderskill2 = new List<GameObject>();
 
     public Tile actualTargetTile;
+
+    [Header("Effect")]
+    public ParticleSystem HitEffect;
+    public ParticleSystem BoomEffect, HealEffect, PowerUpEffect;
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
@@ -67,6 +74,23 @@ public class TacticSystem : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentWalkstack = WalkStack;
 
+    }
+    public void IsHit()
+    {
+        HitEffect.Play();
+    }
+
+    public void IsBoomHit()
+    {
+        BoomEffect.Play();
+    }
+    public void IsHeal()
+    {
+        HealEffect.Play();
+    }
+    public void IsPowerUp()
+    {
+        PowerUpEffect.Play();
     }
 
     public void GetCurrentTile()

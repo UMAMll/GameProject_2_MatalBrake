@@ -17,8 +17,15 @@ public class RocketUnitScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -226,6 +233,7 @@ public class RocketUnitScript : PlayerUnit
                                 if (enemy.attackable)
                                 {
                                     enemy.currentHp -= 4;
+                                    enemy.IsBoomHit();
                                 }
                             }
                         }
@@ -340,6 +348,7 @@ public class RocketUnitScript : PlayerUnit
                     if (CanAttack && enemy.attackable)
                     {
                         enemy.currentHp -= 10;
+                        enemy.IsBoomHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill2CD = Skill2CD;
                         if (CMError)

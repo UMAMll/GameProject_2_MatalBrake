@@ -18,8 +18,15 @@ public class AltainScripts : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -251,6 +258,7 @@ public class AltainScripts : PlayerUnit
                     if (CanAttack && enemy.attackable)
                     {
                         enemy.currentHp -= 3;
+                        enemy.IsHit();
                         currentHp -= 1;
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
@@ -301,6 +309,7 @@ public class AltainScripts : PlayerUnit
     public void CheckMouseAttack2()
     {
         currentHp += 2;
+        IsHeal();
         currentSkill2CD = Skill2CD;
 
         if (CMError)

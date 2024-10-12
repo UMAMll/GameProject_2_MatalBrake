@@ -9,6 +9,7 @@ TagManager:
   - Barrier
   - Heal
   - Stand
+  - BlockCam
   layers:
   - Default
   - TransparentFX

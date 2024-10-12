@@ -21,8 +21,15 @@ public class BigBossBot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.EnemyTurn)
         {
             if (IsMyturn)
@@ -130,6 +137,7 @@ public class BigBossBot : EnemyUnit
             if(currentHp <= 1)
             {
                 currentHp = 1;
+                IsPowerUp();
                 fate = 2;
                 WalkStack = 0;
                 currentWalkstack = 0;
@@ -158,6 +166,7 @@ public class BigBossBot : EnemyUnit
                     {
                         Skill1CD = 1;
                         playertarget.currentHp -= 3;
+                        playertarget.IsHit();
                         currentWalkstack = 0;
                         moving = false;
                         currentSkill1CD = Skill1CD;
@@ -172,6 +181,7 @@ public class BigBossBot : EnemyUnit
 
                         int damage = 5 + (1 * (enemyunitcount.Count));
                         playertarget.currentHp -= damage;
+                        playertarget.IsHit();
                         currentWalkstack = 0;
                         moving = false;
                         currentSkill1CD = Skill1CD;

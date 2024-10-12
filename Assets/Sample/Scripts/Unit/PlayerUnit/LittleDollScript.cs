@@ -22,8 +22,15 @@ public class LittleDollScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -263,6 +270,7 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && enemy.attackable)
                     {
                         enemy.currentHp -= 8;
+                        enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
                         if (CMError)
@@ -374,6 +382,7 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && enemy.attackable && !CDresetbuff)
                     {
                         enemy.currentHp -= 3;
+                        enemy.IsHit();
                         if(enemy.currentHp <= 0)
                         {
                             CDresetbuff = true;
@@ -425,6 +434,7 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && enemy.attackable && CDresetbuff)
                     {
                         enemy.currentHp -= 3;
+                        enemy.IsHit();
                         CDresetbuff = false;
                         currentSkill2CD = Skill2CD;
                         transform.LookAt(enemy.gameObject.transform.position);

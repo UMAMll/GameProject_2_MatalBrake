@@ -13,8 +13,15 @@ public class Minibot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.EnemyTurn)
         {
 
@@ -108,6 +115,7 @@ public class Minibot : EnemyUnit
                 {
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     playertarget.currentHp -= 2;
+                    playertarget.IsHit();
                     transform.LookAt(playertarget.transform.position);
                     currentWalkstack = 0;
                     moving = false;

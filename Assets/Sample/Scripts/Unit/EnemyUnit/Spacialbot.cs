@@ -10,8 +10,15 @@ public class Spacialbot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         boss = FindObjectOfType<BigBossBot>();
         if (boss == null)
         {
@@ -99,6 +106,7 @@ public class Spacialbot : EnemyUnit
                 if(currentHp > 0)
                 {
                     boss.currentHp++;
+                    boss.IsHeal();
                 }
                 currentHp = 0;
             }

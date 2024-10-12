@@ -14,8 +14,15 @@ public class Rocketbot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.EnemyTurn)
         {
 
@@ -146,6 +153,7 @@ public class Rocketbot : EnemyUnit
                                 {
                                     PlayerUnit targetUnit = hit.collider.GetComponent<PlayerUnit>();
                                     targetUnit.currentHp -= 5;
+                                    targetUnit.IsBoomHit();
 
                                 }
                             }

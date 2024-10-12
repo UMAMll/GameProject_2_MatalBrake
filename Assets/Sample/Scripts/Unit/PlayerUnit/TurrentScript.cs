@@ -17,8 +17,15 @@ public class TurrentScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -257,6 +264,7 @@ public class TurrentScript : PlayerUnit
                     if (CanAttack && enemy.attackable)
                     {
                         enemy.currentHp -= 5;
+                        enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
                         if (CMError)
@@ -329,7 +337,7 @@ public class TurrentScript : PlayerUnit
             Tile t;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "Barrier" || hit.collider.CompareTag("Enemy"))
+                if (objectsInColliderskill2.Count != 0)
                 {
                     if (CanAttack)
                     {
@@ -350,6 +358,7 @@ public class TurrentScript : PlayerUnit
                             {
                                 EnemyUnit unit = target.GetComponent<EnemyUnit>();
                                 unit.currentHp -= damagehit;
+                                unit.IsHit();
 
                             }
                         }

@@ -23,8 +23,8 @@ public class Tile : MonoBehaviour
 
     public Material material;
     public GameObject tile;
-
-
+    public GameObject Guide;
+    public Renderer renderer;
 
     //For A*
     public float f = 0;
@@ -36,79 +36,90 @@ public class Tile : MonoBehaviour
     {
         if (current)
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            var emission = par.emission;
-            emission.rateOverTime = 20;
-            material = FindMaterialInChildrenExcludingSelf();
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = Color.yellow;
+            }
+            Guide.gameObject.SetActive(true);
+            /*material = FindMaterialInChildrenExcludingSelf();
             material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.yellow, 0.1f);
-            par.gameObject.SetActive(true);
+            SetEmission(material, Color.yellow, 0.1f);*/
         }
         else if (target)
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            var emission = par.emission;
-            emission.rateOverTime = 20;
-            material = FindMaterialInChildrenExcludingSelf();
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = Color.cyan;
+            }
+            /*material = FindMaterialInChildrenExcludingSelf();
             material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.cyan, 0.1f);
-            par.gameObject.SetActive(true);
+            SetEmission(material, Color.cyan, 0.1f);*/
+            Guide.gameObject.SetActive(true);
         }
         else if (selectable)
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            var emission = par.emission;
-            emission.rateOverTime = 50;
-            material = FindMaterialInChildrenExcludingSelf();
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = new Color(0f, 1f, 0f,1.0f);
+            }
+            /*material = FindMaterialInChildrenExcludingSelf();
             material.EnableKeyword("_EMISSION");
-            SetEmission(material, new Color(0f,0.05f,0f), 1f);
-            par.gameObject.SetActive(true);
+            SetEmission(material, new Color(0f,0.05f,0f), 1f);*/
+            Guide.gameObject.SetActive(true);
             if (healPosition)
             {
-                emission.rateOverTime = 20;
-                material = FindMaterialInChildrenExcludingSelf();
-                material.EnableKeyword("_EMISSION");
-                SetEmission(material, new Color(1f, 0f, 1f), 1f);
-                par.gameObject.SetActive(true);
+                if (renderer != null)
+                {
+                    renderer.material.color = new Color(1f, 0f, 1f,1.0f);
+                }
+                Guide.gameObject.SetActive(true);
             }
         }
         else if (attackable)
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            var emission = par.emission;
-            emission.rateOverTime = 20;
-            material = FindMaterialInChildrenExcludingSelf();
-            material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.red, 1f);
-            par.gameObject.SetActive(true);
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = Color.red;
+            }
+            //SetEmission(material, Color.red, 1f);
+            Guide.gameObject.SetActive(true);
         }
         else if (attacktarget)
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            var emission = par.emission;
-            emission.rateOverTime = 20;
-            material = FindMaterialInChildrenExcludingSelf();
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = Color.magenta;
+            }
+            /*material = FindMaterialInChildrenExcludingSelf();
             material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.magenta, 1f);
-            par.gameObject.SetActive(true);
+            SetEmission(material, Color.magenta, 1f);*/
+            Guide.gameObject.SetActive(true);
         }
         else if (attackselectable)
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            var emission = par.emission;
-            emission.rateOverTime = 50;
-            material = FindMaterialInChildrenExcludingSelf();
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = new Color(0f, 1f, 1f, 1.0f);
+            }
+            /*material = FindMaterialInChildrenExcludingSelf();
             material.EnableKeyword("_EMISSION");
-            SetEmission(material, new Color(0f, 0f, 0.05f), 1f);
-            par.gameObject.SetActive(true);
+            SetEmission(material, new Color(0f, 0f, 0.05f), 1f);*/
+            Guide.gameObject.SetActive(true);
         }
         else
         {
-            ParticleSystem par = GetComponentInChildren<ParticleSystem>(true);
-            par.gameObject.SetActive(false);
-            material = FindMaterialInChildrenExcludingSelf();
-            material.DisableKeyword("_EMISSION");
-            SetEmission(material, new Color(1f, 1f, 1f), 0f);
+            Guide.gameObject.SetActive(false);
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = new Color(1f, 1f, 1f, 1.0f);
+            }
         }
 
         if (TurnManager.Instance.EnemyTurn)
@@ -132,7 +143,8 @@ public class Tile : MonoBehaviour
     void SetEmission(Material mat,Color color, float intensity)
     {
         Color finalColor = color * Mathf.LinearToGammaSpace(intensity);
-        mat.SetColor("_EmissionColor", finalColor);
+        mat.color = color;
+        //mat.SetColor("_EmissionColor", finalColor);
     }
     public void Reset()
     {

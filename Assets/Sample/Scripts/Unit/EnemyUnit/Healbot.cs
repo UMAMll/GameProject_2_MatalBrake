@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Healbot : EnemyUnit
 {
-    public bool IsHeal;
+    public bool Isheal;
     private void Start()
     {
         StandPosition = FindNearestStandTarget();
@@ -14,8 +14,15 @@ public class Healbot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.EnemyTurn)
         {
 
@@ -74,11 +81,11 @@ public class Healbot : EnemyUnit
 
                 if (currentSkill2CD == 0 && currentSkill2CD != Skill2CD)
                 {
-                    if(!IsHeal)
+                    if(!Isheal)
                     {
                         CanAttack2 = false;
                     }
-                    if(IsHeal)
+                    if(Isheal)
                     {
                         CanAttack2 = true;
                     }
@@ -145,6 +152,7 @@ public class Healbot : EnemyUnit
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
                     playertarget.currentHp -= 1;
+                    playertarget.IsHit();
                     currentWalkstack = 0;
                     moving = false;
                     currentSkill1CD = Skill1CD;
@@ -167,13 +175,14 @@ public class Healbot : EnemyUnit
                     if (enemyUnit.currentHp <= (enemyUnit.HpPoint / 2))
                     {
                         Healbot me = this.gameObject.GetComponent<Healbot>();
-                        me.IsHeal = true;
+                        me.Isheal = true;
                     }
-                    if (IsHeal)
+                    if (Isheal)
                     {
                         if (!moving && CanAttack2)
                         {
                             enemyUnit.currentHp += 2;
+                            enemyUnit.IsHeal();
                             currentSkill2CD = Skill2CD;
                         }
 

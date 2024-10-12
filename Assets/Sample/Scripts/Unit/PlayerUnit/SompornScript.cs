@@ -21,8 +21,15 @@ public class SompornScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -215,83 +222,86 @@ public class SompornScript : PlayerUnit
             Tile t;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "Barrier" || hit.collider.CompareTag("Enemy"))
+                
+                if (CanAttack)
                 {
-                    if (CanAttack)
+                    print("ObjectCount = " +objectsInColliderskill1.Count);
+                    if (objectsInColliderskill1.Count == 0)
                     {
-
-                        transform.LookAt(hit.collider.gameObject.transform.position);
-                        
-                        foreach (var target in objectsInColliderskill1)
+                        return;
+                    }
+                    foreach (var target in objectsInColliderskill1)
+                    {
+                        print("AttackEnemy");
+                        if (target.CompareTag("Barrier"))
                         {
-                            print("AttackEnemy");
-                            if (target.CompareTag("Barrier"))
-                            {
-                                Barrier barrier = target.GetComponent<Barrier>();
-                                barrier.IsAttack();
-                            }
-                            if (target.CompareTag("Enemy"))
-                            {
-                                EnemyUnit unit = target.GetComponent<EnemyUnit>();
-                                if (IsBuff)
-                                {
-                                    unit.currentHp -= 4;
-                                    
-                                }
-                                else
-                                {
-                                    unit.currentHp -= 2;
-                                }
-                                print("Attack" + unit.name + " " + unit.currentHp);
-
-                            }
-
+                            Barrier barrier = target.GetComponent<Barrier>();
+                            barrier.IsAttack();
                         }
-                        IsBuff = false;
-                        currentSkill1CD = Skill1CD;
-                        objectsInColliderskill1.Clear();
-                        Skill1Colider.SetActive(false);
-                        if (CMError)
+                        if (target.CompareTag("Enemy"))
                         {
-                            if (SpacialCommand)
+                            EnemyUnit unit = target.GetComponent<EnemyUnit>();
+                            if (IsBuff)
                             {
-                                TurnManager.Instance.currentCMOpoint -= 0;
+                                unit.currentHp -= 4;
+                                unit.IsHit();
+
                             }
                             else
                             {
-                                TurnManager.Instance.currentCMOpoint -= (CMOtoUseSkill1 * 2);
-
+                                unit.currentHp -= 2;
+                                unit.IsHit();
                             }
+                            print("Attack" + unit.name + " " + unit.currentHp);
+
+                        }
+
+                    }
+                    IsBuff = false;
+                    currentSkill1CD = Skill1CD;
+                    objectsInColliderskill1.Clear();
+                    Skill1Colider.SetActive(false);
+                    if (CMError)
+                    {
+                        if (SpacialCommand)
+                        {
+                            TurnManager.Instance.currentCMOpoint -= 0;
                         }
                         else
                         {
-                            if (SpacialCommand)
-                            {
-                                TurnManager.Instance.currentCMOpoint -= 0;
-                            }
-                            else
-                            {
-                                TurnManager.Instance.currentCMOpoint -= CMOtoUseSkill1;
+                            TurnManager.Instance.currentCMOpoint -= (CMOtoUseSkill1 * 2);
 
-                            }
                         }
-                        foreach (GameObject tile in tiles)
-                        {
-                            t = tile.GetComponent<Tile>();
-                            print(t);
-                            if (t != null && CanAttack)
-                            {
-                                t.Reset();
-
-                            }
-                        }
-                        SpacialCommand = false;
-                        CanAttack = false;
-                        TurnManager.Instance.ReMoveAttackableEnemy();
-                        TurnManager.Instance.ReMoveAttackableBarrier();
                     }
+                    else
+                    {
+                        if (SpacialCommand)
+                        {
+                            TurnManager.Instance.currentCMOpoint -= 0;
+                        }
+                        else
+                        {
+                            TurnManager.Instance.currentCMOpoint -= CMOtoUseSkill1;
+
+                        }
+                    }
+                    foreach (GameObject tile in tiles)
+                    {
+                        t = tile.GetComponent<Tile>();
+                        print(t);
+                        if (t != null && CanAttack)
+                        {
+                            t.Reset();
+
+                        }
+                    }
+                    SpacialCommand = false;
+                    CanAttack = false;
+                    TurnManager.Instance.ReMoveAttackableEnemy();
+                    TurnManager.Instance.ReMoveAttackableBarrier();
                 }
-                
+
+
 
             }
 
@@ -300,6 +310,7 @@ public class SompornScript : PlayerUnit
     public void CheckMouseAttack2()
     {
         IsBuff = true;
+        IsPowerUp();
         currentSkill2CD = Skill2CD;
 
         if (CMError)

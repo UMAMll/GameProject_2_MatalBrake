@@ -17,8 +17,15 @@ public class Summonbot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.EnemyTurn)
         {
 
@@ -157,6 +164,7 @@ public class Summonbot : EnemyUnit
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
                     playertarget.currentHp -= 1;
+                    playertarget.IsHit();
                     currentWalkstack = 0;
                     moving = false;
                     currentSkill1CD = Skill1CD;

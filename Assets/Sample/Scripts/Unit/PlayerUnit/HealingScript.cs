@@ -17,8 +17,15 @@ public class HealingScript : PlayerUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.PlayerTurn)
         {
             TurnManager.Instance.Endturnobject.SetActive(true);
@@ -188,6 +195,7 @@ public class HealingScript : PlayerUnit
                     if (CanAttack && target.InRange)
                     {
                         target.currentHp += 4;
+                        target.IsHeal();
                         currentSkill1CD = Skill1CD;
                         objectsInColliderskill1.Clear();
                         if (CMError)
@@ -241,6 +249,7 @@ public class HealingScript : PlayerUnit
         {
             PlayerUnit player = t.GetComponent<PlayerUnit>();
             player.currentHp += 2;
+            player.IsHeal();
         }
 
         currentSkill2CD = Skill2CD;

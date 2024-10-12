@@ -14,8 +14,15 @@ public class Boombot : EnemyUnit
     {
         if (!TurnManager.Instance.IsStartGame)
         {
+            HPCanvas.SetActive(false);
             return;
         }
+
+        if (TurnManager.Instance.IsStartGame)
+        {
+            HPCanvas.SetActive(true);
+        }
+
         if (TurnManager.Instance.EnemyTurn)
         {
 
@@ -102,6 +109,7 @@ public class Boombot : EnemyUnit
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
                     playertarget.currentHp -= 3;
+                    playertarget.IsHit();
                     currentWalkstack = 0;
                     moving = false;
                     currentSkill1CD = Skill1CD;
