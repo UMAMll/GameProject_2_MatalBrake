@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +13,10 @@ public class BigBossBot : EnemyUnit
     private void Start()
     {
         fate = 1;
-        StandPosition = FindNearestStandTarget();
+        if (StandPosition == null)
+        {
+            StandPosition = FindNearestStandTarget();
+        }
         Init();
     }
     private void Update()

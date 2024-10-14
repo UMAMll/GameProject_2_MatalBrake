@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Barrier : MonoBehaviour
@@ -17,6 +16,8 @@ public class Barrier : MonoBehaviour
 
     GameObject unitPlayer;
     GameObject unitEnemy;
+
+    public ParticleSystem Boom, hit;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,15 +30,6 @@ public class Barrier : MonoBehaviour
         Vector3 direction = new Vector3(UnitPosition.x - transform.position.x, 0, UnitPosition.z - transform.position.z);
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 2));
-
-        if(InRangeAttack )
-        {
-            barrier.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 0.5f);
-        }
-        if(!InRangeAttack )
-        {
-            barrier.GetComponent<Renderer>().material.color = Color.white;
-        }
     }
     private void OnTriggerStay(Collider other)
     {
@@ -90,7 +82,7 @@ public class Barrier : MonoBehaviour
 
     IEnumerator WaitForDestroy()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         TurnManager.Instance.Barriers.Clear();
         TurnManager.Instance.RemoveInBarrier();
         TurnManager.Instance.ResetTile();

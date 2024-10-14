@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RocketUnitScript : PlayerUnit
 {
+    
     private void Start()
     {
+        IsRocket = true;
+        idleGameobj.SetActive(true);
+        moreGameobj.SetActive(false);
         actionCanves.SetActive(false);
         Init();
         CanAttack = false;
@@ -15,6 +17,10 @@ public class RocketUnitScript : PlayerUnit
     }
     private void Update()
     {
+        if (!IsMyturn)
+        {
+            actionCanves.SetActive(false);
+        }
         if (!TurnManager.Instance.IsStartGame)
         {
             HPCanvas.SetActive(false);
@@ -65,6 +71,16 @@ public class RocketUnitScript : PlayerUnit
                     Move();
                 }
 
+            }
+            if(moving)
+            {
+                idleGameobj.SetActive(true);
+                moreGameobj.SetActive(false);
+                IdleWalkanim.SetBool("Walk",true);
+            }
+            if(!moving)
+            {
+                IdleWalkanim.SetBool("Walk",false);
             }
             if (currentWalkstack == 0)
             {
@@ -134,7 +150,10 @@ public class RocketUnitScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            moreGameobj.SetActive(true);
+            idleGameobj.SetActive(false);
+            Moreanim.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -184,14 +203,14 @@ public class RocketUnitScript : PlayerUnit
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Barrier"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
             objectsInColliderskill1.Add(other.gameObject);
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Barrier"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
             objectsInColliderskill1.Remove(other.gameObject);
         }
@@ -207,22 +226,13 @@ public class RocketUnitScript : PlayerUnit
             Tile t;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "Barrier" || hit.collider.CompareTag("Enemy"))
+                if (hit.collider.CompareTag("Enemy"))
                 {
                     if (CanAttack)
                     {
-                        //correct Barrier
-                        foreach (var target in TurnManager.Instance.Barriers)
-                        {
-                            Barrier barrier = target.GetComponent<Barrier>();
-                            if (barrier != null)
-                            {
-                                if (barrier.InRangeAttack)
-                                {
-                                    barrier.IsAttack();
-                                }
-                            }
-                        }
+                        moreGameobj.SetActive(true);
+                        idleGameobj.SetActive(false);
+                        Moreanim.SetTrigger("Attack1");
                         //correct Enemy
                         foreach (var target in TurnManager.Instance.EnemyUnits)
                         {
@@ -298,9 +308,12 @@ public class RocketUnitScript : PlayerUnit
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
-
+                        barrier.Boom.Play();
                         barrier.IsAttack();
                         transform.LookAt(barrier.gameObject.transform.position);
+                        moreGameobj.SetActive(true);
+                        idleGameobj.SetActive(false);
+                        Moreanim.SetTrigger("Attack1");
                         currentSkill2CD = Skill2CD;
                         if (CMError)
                         {
@@ -350,6 +363,9 @@ public class RocketUnitScript : PlayerUnit
                         enemy.currentHp -= 10;
                         enemy.IsBoomHit();
                         transform.LookAt(enemy.gameObject.transform.position);
+                        moreGameobj.SetActive(true);
+                        idleGameobj.SetActive(false);
+                        Moreanim.SetTrigger("Attack1");
                         currentSkill2CD = Skill2CD;
                         if (CMError)
                         {

@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Boombot : EnemyUnit
 {
 
     private void Start()
     {
-        StandPosition = FindNearestStandTarget();
+        if(StandPosition == null)
+        {
+            StandPosition = FindNearestStandTarget();
+        }
+
         Init();
     }
     private void Update()

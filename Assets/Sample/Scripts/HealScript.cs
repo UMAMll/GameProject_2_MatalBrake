@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealScript : MonoBehaviour
@@ -27,7 +25,6 @@ public class HealScript : MonoBehaviour
         }
         if (CuldownTurn == 0)
         {
-            HealModel.GetComponent<Renderer>().material.color = Color.yellow;
             foreach (Collider h in col)
             {
                 h.enabled = true;
@@ -35,7 +32,6 @@ public class HealScript : MonoBehaviour
         }
         else
         {
-            HealModel.GetComponent<Renderer>().material.color = Color.white;
             foreach (Collider h in col)
             {
                 h.enabled = false;
@@ -43,7 +39,7 @@ public class HealScript : MonoBehaviour
         }
         if (HealStack <= 0)
         {
-            Destroy(gameObject);
+            Destroy(HealModel);
         }
 
         
@@ -59,6 +55,7 @@ public class HealScript : MonoBehaviour
             {
 
                 player.currentHp += healPower;
+                player.IsHeal();
                 HealStack -= 1;
                 foreach (Collider h in col)
                 {

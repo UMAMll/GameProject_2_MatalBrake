@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using System.Xml.Linq;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -226,16 +221,29 @@ public class TurnManager : MonoBehaviour
             HaveLeader = true;
             
         }
-        if (playerunit == null)
+        if(IsStartGame)
         {
-            IsStartGame = false;
-            //player Lostconition
+            if (playerunit.Count == 0)
+            {
+                print("EnemyWin");
+                IsStartGame = false;
+                //player Lostconition
+                UIManager.Instance.LoseCanvas.SetActive(true);
 
+            }
+            if (EnemyUnits.Count == 0)
+            {
+                print("Player win");
+                IsStartGame = false;
+                UIManager.Instance.WinCanvas.SetActive(true);
+
+                //state clear
+                PlayerPrefs.SetInt("Level2", 1);
+                PlayerPrefs.SetInt("Level1", 2);
+                //enemy lost conition
+            }
         }
-        if(EnemyUnits.Count == 0)
-        {
-            //enemy lost conition
-        }
+        
         if (currentCMOpoint > MaxCMOpoint)
         {
             currentCMOpoint = MaxCMOpoint;
@@ -375,6 +383,7 @@ public class TurnManager : MonoBehaviour
             ReMoveEnemyTurn();
             StartNewPlayerTurn();
             turn++;
+            UIManager.Instance.UpDateUITurn(turn);
             return;
         }
         EnemyUnits[NextEnemy].GetComponent<EnemyUnit>().IsMyturn = true;

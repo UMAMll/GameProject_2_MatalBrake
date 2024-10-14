@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,10 +40,8 @@ public class Tile : MonoBehaviour
             {
                 renderer.material.color = Color.yellow;
             }
-            Guide.gameObject.SetActive(true);
-            /*material = FindMaterialInChildrenExcludingSelf();
-            material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.yellow, 0.1f);*/
+            if (TurnManager.Instance.PlayerTurn)
+                Guide.gameObject.SetActive(true);
         }
         else if (target)
         {
@@ -53,10 +50,8 @@ public class Tile : MonoBehaviour
             {
                 renderer.material.color = Color.cyan;
             }
-            /*material = FindMaterialInChildrenExcludingSelf();
-            material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.cyan, 0.1f);*/
-            Guide.gameObject.SetActive(true);
+            if(TurnManager.Instance.PlayerTurn)
+                Guide.gameObject.SetActive(true);
         }
         else if (selectable)
         {
@@ -65,17 +60,17 @@ public class Tile : MonoBehaviour
             {
                 renderer.material.color = new Color(0f, 1f, 0f,1.0f);
             }
-            /*material = FindMaterialInChildrenExcludingSelf();
-            material.EnableKeyword("_EMISSION");
-            SetEmission(material, new Color(0f,0.05f,0f), 1f);*/
-            Guide.gameObject.SetActive(true);
+            if (TurnManager.Instance.PlayerTurn)
+                Guide.gameObject.SetActive(true);
+
             if (healPosition)
             {
                 if (renderer != null)
                 {
                     renderer.material.color = new Color(1f, 0f, 1f,1.0f);
                 }
-                Guide.gameObject.SetActive(true);
+                if (TurnManager.Instance.PlayerTurn)
+                    Guide.gameObject.SetActive(true);
             }
         }
         else if (attackable)
@@ -85,8 +80,8 @@ public class Tile : MonoBehaviour
             {
                 renderer.material.color = Color.red;
             }
-            //SetEmission(material, Color.red, 1f);
-            Guide.gameObject.SetActive(true);
+            if (TurnManager.Instance.PlayerTurn)
+                Guide.gameObject.SetActive(true);
         }
         else if (attacktarget)
         {
@@ -95,10 +90,8 @@ public class Tile : MonoBehaviour
             {
                 renderer.material.color = Color.magenta;
             }
-            /*material = FindMaterialInChildrenExcludingSelf();
-            material.EnableKeyword("_EMISSION");
-            SetEmission(material, Color.magenta, 1f);*/
-            Guide.gameObject.SetActive(true);
+            if (TurnManager.Instance.PlayerTurn)
+                Guide.gameObject.SetActive(true);
         }
         else if (attackselectable)
         {
@@ -107,10 +100,8 @@ public class Tile : MonoBehaviour
             {
                 renderer.material.color = new Color(0f, 1f, 1f, 1.0f);
             }
-            /*material = FindMaterialInChildrenExcludingSelf();
-            material.EnableKeyword("_EMISSION");
-            SetEmission(material, new Color(0f, 0f, 0.05f), 1f);*/
-            Guide.gameObject.SetActive(true);
+            if (TurnManager.Instance.PlayerTurn)
+                Guide.gameObject.SetActive(true);
         }
         else
         {
@@ -126,25 +117,6 @@ public class Tile : MonoBehaviour
         {
             Reset();
         }
-    }
-
-    Material FindMaterialInChildrenExcludingSelf()
-    {
-        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
-        foreach (Renderer renderer in renderers)
-        {
-            if (renderer.gameObject != this.gameObject && renderer.gameObject != tile.gameObject)
-            {
-                return renderer.material;
-            }
-        }
-        return null;
-    }
-    void SetEmission(Material mat,Color color, float intensity)
-    {
-        Color finalColor = color * Mathf.LinearToGammaSpace(intensity);
-        mat.color = color;
-        //mat.SetColor("_EmissionColor", finalColor);
     }
     public void Reset()
     {

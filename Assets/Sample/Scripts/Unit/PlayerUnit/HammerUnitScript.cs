@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class HammerUnitScript : PlayerUnit

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TelephoneScript : PlayerUnit
@@ -18,6 +16,10 @@ public class TelephoneScript : PlayerUnit
     }
     private void Update()
     {
+        if (!IsMyturn)
+        {
+            actionCanves.SetActive(false);
+        }
         if (!TurnManager.Instance.IsStartGame)
         {
             HPCanvas.SetActive(false);
@@ -50,7 +52,6 @@ public class TelephoneScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 1 && CanAttack)
                     {
-
                         CheckMouseAttack1();
                     }
                     if (!attacking && isAttack == 2 && CanAttack)
@@ -68,6 +69,10 @@ public class TelephoneScript : PlayerUnit
                     Move();
                 }
 
+            }
+            if(!CanAttack)
+            {
+                healObjectModel.SetActive(false);
             }
             if (currentWalkstack == 0)
             {
@@ -137,7 +142,8 @@ public class TelephoneScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -186,6 +192,7 @@ public class TelephoneScript : PlayerUnit
     }
     public void CheckMouseAttack1()
     {
+        animator.SetTrigger("Attack1");
         print("Attack1");
         Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit h;
@@ -268,6 +275,8 @@ public class TelephoneScript : PlayerUnit
 
         if (Input.GetMouseButtonUp(1))
         {
+            animator.SetTrigger("Attack2");
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 

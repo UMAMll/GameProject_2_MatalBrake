@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TacticSystem : MonoBehaviour
 {
@@ -67,6 +63,14 @@ public class TacticSystem : MonoBehaviour
     [Header("Effect")]
     public ParticleSystem HitEffect;
     public ParticleSystem BoomEffect, HealEffect, PowerUpEffect;
+
+    [Header("Animation")]
+    public Animator animator;
+
+    [Header("RocketAnimation")]
+    public bool IsRocket;
+    public Animator IdleWalkanim, Moreanim;
+    public GameObject idleGameobj, moreGameobj;
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
@@ -75,14 +79,38 @@ public class TacticSystem : MonoBehaviour
         currentWalkstack = WalkStack;
 
     }
+
+    
     public void IsHit()
     {
         HitEffect.Play();
+        if(animator != null)
+        {
+            animator.SetTrigger("Hurt");
+
+        }
+        if (animator == null && IsRocket)
+        {
+            moreGameobj.SetActive(true);
+            idleGameobj.SetActive(false);
+            Moreanim.SetTrigger("Hurt");
+        }
     }
 
     public void IsBoomHit()
     {
         BoomEffect.Play();
+        if(animator != null)
+        {
+            animator.SetTrigger("Hurt");
+
+        }
+        if (animator == null && IsRocket)
+        {
+            moreGameobj.SetActive(true);
+            idleGameobj.SetActive(false);
+            Moreanim.SetTrigger("Hurt");
+        }
     }
     public void IsHeal()
     {
@@ -213,7 +241,12 @@ public class TacticSystem : MonoBehaviour
             else
             {
                 transform.position = target;
-                
+                if(animator != null)
+                {
+                    animator.SetBool("Walk", true);
+                }
+
+
                 path.Pop();
             }
         }
@@ -223,6 +256,11 @@ public class TacticSystem : MonoBehaviour
             //TurnManager.Instance.currentCMOpoint--;
             currentWalkstack--;
             moving = false;
+            if(animator != null)
+            {
+                animator.SetBool("Walk", false);
+
+            }
         }
 
     }
@@ -611,4 +649,6 @@ public class TacticSystem : MonoBehaviour
         UIManager.Instance.IsShowProfile = false;
 
     }
+
+    
 }

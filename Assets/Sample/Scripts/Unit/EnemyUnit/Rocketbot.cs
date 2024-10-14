@@ -1,13 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Rocketbot : EnemyUnit
 {
     private void Start()
     {
-        StandPosition = FindNearestStandTarget();
+        if (StandPosition == null)
+        {
+            StandPosition = FindNearestStandTarget();
+        }
         Init();
     }
     private void Update()

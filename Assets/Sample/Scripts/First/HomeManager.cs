@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,6 +26,12 @@ public class HomeManager : MonoBehaviour
     {
         Application.Quit();
 
+    }
+
+    public void DeleteSave()
+    {
+        PlayerPrefs.DeleteAll();
+        SaveGame = PlayerPrefs.GetInt("NewGame");
     }
     private void Update()
     {

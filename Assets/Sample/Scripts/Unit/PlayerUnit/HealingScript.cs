@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealingScript : PlayerUnit
@@ -15,6 +13,10 @@ public class HealingScript : PlayerUnit
     }
     private void Update()
     {
+        if (!IsMyturn)
+        {
+            actionCanves.SetActive(false);
+        }
         if (!TurnManager.Instance.IsStartGame)
         {
             HPCanvas.SetActive(false);
@@ -134,7 +136,8 @@ public class HealingScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -195,6 +198,11 @@ public class HealingScript : PlayerUnit
                     if (CanAttack && target.InRange)
                     {
                         target.currentHp += 4;
+                        if(animator != null)
+                        {
+                            animator.SetTrigger("Attack1");
+
+                        }
                         target.IsHeal();
                         currentSkill1CD = Skill1CD;
                         objectsInColliderskill1.Clear();
@@ -245,6 +253,13 @@ public class HealingScript : PlayerUnit
     }
     public void CheckMouseAttack2()
     {
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack2");
+
+        }
+
         foreach (GameObject t in TurnManager.Instance.playerunit)
         {
             PlayerUnit player = t.GetComponent<PlayerUnit>();

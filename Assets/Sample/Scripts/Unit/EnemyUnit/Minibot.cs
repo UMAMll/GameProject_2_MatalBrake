@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Minibot : EnemyUnit
 {
     private void Start()
     {
-        StandPosition = FindNearestStandTarget();
+        if (StandPosition == null)
+        {
+            StandPosition = FindNearestStandTarget();
+        }
         Init();
     }
     private void Update()
@@ -113,6 +112,7 @@ public class Minibot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
+                    animator.SetTrigger("Attack");
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     playertarget.currentHp -= 2;
                     playertarget.IsHit();

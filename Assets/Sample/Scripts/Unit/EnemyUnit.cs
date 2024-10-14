@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -88,7 +86,8 @@ public class EnemyUnit : TacticSystem
 
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.EnemyUnits.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -163,6 +162,11 @@ public class EnemyUnit : TacticSystem
                 GameObject player = collider.gameObject;
                 playersCanAttack.Add(player);
                 playersCanAttack = RemoveDuplicateItems(playersCanAttack);
+                PlayerUnit target = player.GetComponent<PlayerUnit>();
+                if (target.Inbarier)
+                {
+                    playersCanAttack.Remove(player);
+                }
             }
         }
     }

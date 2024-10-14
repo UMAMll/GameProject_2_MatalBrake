@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class LittleDollScript : PlayerUnit
@@ -20,6 +15,10 @@ public class LittleDollScript : PlayerUnit
     }
     private void Update()
     {
+        if (!IsMyturn)
+        {
+            actionCanves.SetActive(false);
+        }
         if (!TurnManager.Instance.IsStartGame)
         {
             HPCanvas.SetActive(false);
@@ -52,6 +51,9 @@ public class LittleDollScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 1 && CanAttack)
                     {
+
+                        animator.SetBool("Post", CanAttack);
+
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
 
@@ -65,6 +67,8 @@ public class LittleDollScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 2 && CanAttack)
                     {
+                        animator.SetBool("Post", CanAttack);
+
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
 
@@ -155,7 +159,8 @@ public class LittleDollScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -220,7 +225,8 @@ public class LittleDollScript : PlayerUnit
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
-
+                        animator.SetTrigger("Attack");
+                        barrier.hit.Play();
                         barrier.IsAttack();
                         transform.LookAt(barrier.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
@@ -260,6 +266,7 @@ public class LittleDollScript : PlayerUnit
                         }
                         SpacialCommand = false;
                         CanAttack = false;
+                        animator.SetBool("Post", false);
                         TurnManager.Instance.ReMoveAttackableEnemy();
                         TurnManager.Instance.ReMoveAttackableBarrier();
                     }
@@ -269,6 +276,7 @@ public class LittleDollScript : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
+                        animator.SetTrigger("Attack");
                         enemy.currentHp -= 8;
                         enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
@@ -308,6 +316,7 @@ public class LittleDollScript : PlayerUnit
                         }
                         SpacialCommand = false;
                         CanAttack = false;
+                        animator.SetBool("Post", false);
                         TurnManager.Instance.ReMoveAttackableEnemy();
                         TurnManager.Instance.ReMoveAttackableBarrier();
                     }
@@ -333,6 +342,8 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && barrier.InRangeAttack)
                     {
 
+                        animator.SetTrigger("Attack");
+                        barrier.hit.Play();
                         barrier.IsAttack();
                         transform.LookAt(barrier.gameObject.transform.position);
                         currentSkill2CD = Skill2CD;
@@ -372,6 +383,7 @@ public class LittleDollScript : PlayerUnit
                         }
                         SpacialCommand = false;
                         CanAttack = false;
+                        animator.SetBool("Post", CanAttack);
                         TurnManager.Instance.ReMoveAttackableEnemy();
                         TurnManager.Instance.ReMoveAttackableBarrier();
                     }
@@ -381,6 +393,7 @@ public class LittleDollScript : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable && !CDresetbuff)
                     {
+                        animator.SetTrigger("Attack");
                         enemy.currentHp -= 3;
                         enemy.IsHit();
                         if(enemy.currentHp <= 0)
@@ -427,12 +440,14 @@ public class LittleDollScript : PlayerUnit
                         }
                         SpacialCommand = false;
                         CanAttack = false;
+                        animator.SetBool("Post", CanAttack);
                         TurnManager.Instance.ReMoveAttackableEnemy();
                         TurnManager.Instance.ReMoveAttackableBarrier();
                     }
 
                     if (CanAttack && enemy.attackable && CDresetbuff)
                     {
+                        animator.SetTrigger("Attack");
                         enemy.currentHp -= 3;
                         enemy.IsHit();
                         CDresetbuff = false;
@@ -473,6 +488,7 @@ public class LittleDollScript : PlayerUnit
                         }
                         SpacialCommand = false;
                         CanAttack = false;
+                        animator.SetBool("Post", CanAttack);
                         TurnManager.Instance.ReMoveAttackableEnemy();
                         TurnManager.Instance.ReMoveAttackableBarrier();
                     }

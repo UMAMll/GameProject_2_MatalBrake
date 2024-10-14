@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Summonbot : EnemyUnit
@@ -10,7 +7,10 @@ public class Summonbot : EnemyUnit
     public GameObject[] summonTargetpos;
     private void Start()
     {
-        StandPosition = FindNearestStandTarget();
+        if (StandPosition == null)
+        {
+            StandPosition = FindNearestStandTarget();
+        }
         Init();
     }
     private void Update()

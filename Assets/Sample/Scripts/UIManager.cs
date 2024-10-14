@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public TextMeshProUGUI Turn;
     public GameObject ProfilePanel;
     public Image Picture;
     public TextMeshProUGUI nametext;
@@ -25,6 +24,9 @@ public class UIManager : MonoBehaviour
 
     public bool IsShowProfile;
     public bool IsshowFollowupUI;
+
+    public GameObject InGameCanvas;
+    public GameObject WinCanvas, LoseCanvas;
     public static UIManager instance;
     
     public static UIManager Instance
@@ -49,7 +51,9 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
-        
+        WinCanvas.SetActive(false);
+        LoseCanvas.SetActive(false);
+        InGameCanvas.SetActive(false);
     }
 
     // Update is called once per frame
@@ -65,16 +69,17 @@ public class UIManager : MonoBehaviour
             uiDescription.gameObject.SetActive(false);
         }
 
-        if (!TurnManager.Instance.IsStartGame)
-        {
-            leaderpanel.SetActive(true);
-        }
-
         if (TurnManager.Instance.IsStartGame)
         {
             leaderpanel.SetActive(false);
+            InGameCanvas.SetActive(true);
         }
 
+        if (!TurnManager.Instance.IsStartGame)
+        {
+            InGameCanvas.SetActive(false );
+            TurnManager.Instance.RemoveThisTurn();
+        }
     }
     public void SetLeader(string name)
     {
@@ -153,7 +158,11 @@ public class UIManager : MonoBehaviour
             
         }
             
-            
+           
         
+    }
+    public void UpDateUITurn(int turn)
+    {
+        Turn.text = turn.ToString();
     }
 }
