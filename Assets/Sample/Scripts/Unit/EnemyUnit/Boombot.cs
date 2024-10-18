@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 public class Boombot : EnemyUnit
 {
 
@@ -25,6 +27,7 @@ public class Boombot : EnemyUnit
 
         if (TurnManager.Instance.EnemyTurn)
         {
+            CheckTurnUnit();
 
             if (IsMyturn)
             {
@@ -87,7 +90,9 @@ public class Boombot : EnemyUnit
                 }
                 if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
                 {
+
                     TurnManager.Instance.ReMoveEnemyTurn();
+                    print("11");
                     TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
                 }
 

@@ -27,6 +27,7 @@ public class SompornScript : PlayerUnit
 
         if (TurnManager.Instance.PlayerTurn)
         {
+            CheckTurnUnit();
             TurnManager.Instance.Endturnobject.SetActive(true);
             if (IsMyturn)
             {

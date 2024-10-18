@@ -98,8 +98,7 @@ public class Rocketbot : EnemyUnit
                 }
                 if ((!CanMove) && ( IsCharge || !CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
                 {
-                    TurnManager.Instance.ReMoveEnemyTurn();
-                    TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
+                    
                 }
 
             }

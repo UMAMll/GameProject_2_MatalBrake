@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 public class Healbot : EnemyUnit
 {
     public bool Isheal;
@@ -6,7 +8,7 @@ public class Healbot : EnemyUnit
         StandPosition = FindNearestStandTarget();
         Init();
     }
-    private void Update()
+    private async void Update()
     {
         if (!TurnManager.Instance.IsStartGame)
         {
@@ -126,6 +128,7 @@ public class Healbot : EnemyUnit
                 }
                 if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
                 {
+                    await Task.Delay(2000);
                     TurnManager.Instance.ReMoveEnemyTurn();
                     TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
                 }

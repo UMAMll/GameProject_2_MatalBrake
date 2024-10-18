@@ -62,7 +62,8 @@ public class TacticSystem : MonoBehaviour
 
     [Header("Effect")]
     public ParticleSystem HitEffect;
-    public ParticleSystem BoomEffect, HealEffect, PowerUpEffect;
+    public ParticleSystem BoomEffect, HealEffect, PowerUpEffect, MyTurnEffect;
+    bool isplay;
 
     [Header("Animation")]
     public Animator animator;
@@ -94,6 +95,30 @@ public class TacticSystem : MonoBehaviour
             moreGameobj.SetActive(true);
             idleGameobj.SetActive(false);
             Moreanim.SetTrigger("Hurt");
+        }
+    }
+    public void CheckTurnUnit()
+    {
+        
+        if (IsMyturn)
+        {
+            if (!isplay)
+            {
+                MyTurnEffect.gameObject.SetActive(true);
+                MyTurnEffect.Play();
+                isplay = true;
+            }
+
+        }
+        if (!IsMyturn)
+        {
+            if(isplay)
+            {
+                MyTurnEffect.Stop();
+                MyTurnEffect.gameObject.SetActive(false);
+                isplay = false;
+            }
+            
         }
     }
 

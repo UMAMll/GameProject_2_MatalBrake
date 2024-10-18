@@ -26,6 +26,8 @@ public class TurnManager : MonoBehaviour
     public bool HaveLeader;
     public int EnemyAt;
     //public LayerMask clickableLayers;
+
+    public bool isProcessingTurn;
     public static TurnManager Instance
     {
         get
@@ -276,6 +278,7 @@ public class TurnManager : MonoBehaviour
         {
             print("PlayerTurn");
             UIManager.Instance.ActionpointPanel.SetActive(true);
+
         }
         if (EnemyTurn)
         {
@@ -284,6 +287,22 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    public Transform TurnEnemy()
+    {
+        foreach (GameObject E in EnemyUnits)
+        {
+            EnemyUnit enemy = E.GetComponent<EnemyUnit>();
+            if (enemy != null)
+            {
+                if (enemy.IsMyturn)
+                {
+                    return enemy.gameObject.transform;
+                }
+            }
+
+        }
+        return null;
+    }
     public Vector3 BarrierLook()
     {
         if (PlayerTurn)
@@ -322,7 +341,7 @@ public class TurnManager : MonoBehaviour
         return Vector3.zero;
         
     }
-    public void StartNewPlayerTurn()
+    public void StartNewPlayerTurn(int currentturn)
     {
         UpDateEnemys();
         UpdateBarriers();
@@ -376,12 +395,14 @@ public class TurnManager : MonoBehaviour
     }
     public void NextEnemyTurn(int NextEnemy)
     {
-        if(NextEnemy >= EnemyUnits.Count)
+        
+        if (NextEnemy >= EnemyUnits.Count)
         {
             EnemyTurn = false;
             PlayerTurn = true;
             ReMoveEnemyTurn();
-            StartNewPlayerTurn();
+            StartNewPlayerTurn(turn);
+            print("1");
             turn++;
             UIManager.Instance.UpDateUITurn(turn);
             return;

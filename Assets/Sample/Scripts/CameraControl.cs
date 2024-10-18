@@ -15,6 +15,8 @@ public class CameraControl : MonoBehaviour
 
     public Vector2 minpos;
     public Vector2 maxpos;
+
+    public Transform currenttransfrom;
     void Start()
     {
         if (MainCamera == null)
@@ -31,7 +33,10 @@ public class CameraControl : MonoBehaviour
     {
         if (MainCamera == null)
             return;
-
+        if (TurnManager.Instance.EnemyTurn)
+        {
+            return;
+        }
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
@@ -149,7 +154,30 @@ public class CameraControl : MonoBehaviour
             print("i" + i.ToString() + "j" + j.ToString() + "k" + k.ToString() + "h" + h.ToString() + "w" + w.ToString());
 
         }
-        CheckVisibleObjects();
+
+        for (int i = 0; i < VirtualCameraTurnLeft.Length; i++)
+        {
+
+            if (VirtualCameraTurnLeft[i].Priority == 1)
+            {
+
+                if (TurnManager.Instance.EnemyTurn)
+                {
+                    //VirtualCameraTurnLeft[i].LookAt = TurnManager.Instance.TurnEnemy();
+                    VirtualCameraTurnLeft[i].Follow = TurnManager.Instance.TurnEnemy();
+
+                }
+                else if (TurnManager.Instance.PlayerTurn)
+                {
+                    // VirtualCameraTurnLeft[i].LookAt = TurnManager.Instance.TurnEnemy();
+                    VirtualCameraTurnLeft[i].Follow = TurnManager.Instance.TurnEnemy();
+                }
+
+
+            }
+
+        }
+        //CheckVisibleObjects();
     }
     void CheckVisibleObjects()
     {

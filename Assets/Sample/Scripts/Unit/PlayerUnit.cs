@@ -588,6 +588,7 @@ public class PlayerUnit : TacticSystem
 
         }
     }*/
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 public class Minibot : EnemyUnit
 {
     private void Start()
@@ -8,7 +10,7 @@ public class Minibot : EnemyUnit
         }
         Init();
     }
-    private void Update()
+    private async void Update()
     {
         if (!TurnManager.Instance.IsStartGame)
         {
@@ -23,6 +25,7 @@ public class Minibot : EnemyUnit
 
         if (TurnManager.Instance.EnemyTurn)
         {
+            CheckTurnUnit();
 
             if (IsMyturn)
             {
@@ -40,7 +43,7 @@ public class Minibot : EnemyUnit
                
                 if (currentWalkstack <= 0)
                 {
-                    CanMove = false;
+                    StartCoroutine(DelayTurn(2));
                 }
                 else if (currentWalkstack > 0)
                 {
@@ -102,7 +105,6 @@ public class Minibot : EnemyUnit
         // health
         HealthManage();
     }
-
 
     public void Attack1()
     {

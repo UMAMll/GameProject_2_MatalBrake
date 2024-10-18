@@ -88,6 +88,7 @@ public class EnemyUnit : TacticSystem
         {
             animator.SetTrigger("Die");
             TurnManager.Instance.EnemyUnits.Remove(gameObject);
+            TurnManager.Instance.ResetTile();
         }
         if (currentHp > HpPoint)
         {
@@ -285,16 +286,13 @@ public class EnemyUnit : TacticSystem
         }
     }
 
-
-    IEnumerator WaitForDead()
+    public void Delay()
     {
-        Debug.Log("EnemyDied");
-        yield return new WaitForSeconds(2);
-        print(gameObject);
-        TurnManager.Instance.EnemyUnits.Remove(gameObject);
-        Destroy(gameObject);
-        //TurnManager.Instance.UpDateEnemys();
-        print("Destroy");
-        TurnManager.Instance.ResetTile();
+        return;
+    }
+    public IEnumerator DelayTurn(float count)
+    {
+        yield return new WaitForSeconds(count);
+        CanMove = false;
     }
 }

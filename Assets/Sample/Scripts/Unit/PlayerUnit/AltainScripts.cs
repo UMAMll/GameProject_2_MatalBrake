@@ -26,6 +26,7 @@ public class AltainScripts : PlayerUnit
 
         if (TurnManager.Instance.PlayerTurn)
         {
+            CheckTurnUnit();
             TurnManager.Instance.Endturnobject.SetActive(true);
             if (IsMyturn)
             {
