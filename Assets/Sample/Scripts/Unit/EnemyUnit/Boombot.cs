@@ -22,12 +22,12 @@ public class Boombot : EnemyUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 
         if (TurnManager.Instance.EnemyTurn)
         {
-            CheckTurnUnit();
 
             if (IsMyturn)
             {
@@ -47,7 +47,7 @@ public class Boombot : EnemyUnit
                 }
                 if (currentWalkstack <= 0)
                 {
-                    CanMove = false;
+                    StartCoroutine(DelayTurn(2));
                 }
                 else if (currentWalkstack > 0)
                 {

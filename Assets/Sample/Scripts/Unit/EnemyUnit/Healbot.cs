@@ -18,6 +18,7 @@ public class Healbot : EnemyUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 

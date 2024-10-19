@@ -21,6 +21,7 @@ public class Rocketbot : EnemyUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 

@@ -276,12 +276,14 @@ public class TurnManager : MonoBehaviour
         }
         if (PlayerTurn)
         {
+            ReMoveEnemyTurn();
             print("PlayerTurn");
             UIManager.Instance.ActionpointPanel.SetActive(true);
 
         }
         if (EnemyTurn)
         {
+            RemoveThisTurn();
             print("EnemyTurn");
             UIManager.Instance.ActionpointPanel.SetActive(false);
         }

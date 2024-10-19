@@ -29,6 +29,7 @@ public class BigBossBot : EnemyUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 

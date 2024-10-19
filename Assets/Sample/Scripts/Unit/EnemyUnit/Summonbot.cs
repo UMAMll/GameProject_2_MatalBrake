@@ -23,6 +23,7 @@ public class Summonbot : EnemyUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 

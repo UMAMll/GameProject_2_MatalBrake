@@ -27,12 +27,12 @@ public class LittleDollScript : PlayerUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 
         if (TurnManager.Instance.PlayerTurn)
         {
-            CheckTurnUnit();
             TurnManager.Instance.Endturnobject.SetActive(true);
             if (IsMyturn)
             {

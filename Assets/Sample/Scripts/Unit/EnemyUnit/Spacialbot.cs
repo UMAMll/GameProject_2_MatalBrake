@@ -31,7 +31,8 @@ public class Spacialbot : EnemyUnit
     }
     private void Update()
     {
-        
+        CheckTurnUnit();
+
         if (TurnManager.Instance.EnemyTurn)
         {
 

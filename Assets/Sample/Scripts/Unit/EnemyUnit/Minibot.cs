@@ -20,12 +20,12 @@ public class Minibot : EnemyUnit
 
         if (TurnManager.Instance.IsStartGame)
         {
+            CheckTurnUnit();
             HPCanvas.SetActive(true);
         }
 
         if (TurnManager.Instance.EnemyTurn)
         {
-            CheckTurnUnit();
 
             if (IsMyturn)
             {
