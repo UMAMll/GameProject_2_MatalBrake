@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    public bool TableMode;
+
     public bool walkable = true;
     public bool current = false;
     public bool target = false;
@@ -30,9 +32,13 @@ public class Tile : MonoBehaviour
     public float g = 0;
     public float h = 0;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
+        CheckTile();
+    }
+
+    public void CheckTile()
+    { 
         if (current)
         {
             renderer = Guide.GetComponent<Renderer>();
@@ -113,6 +119,17 @@ public class Tile : MonoBehaviour
             }
         }
 
+        if (TableMode && !current && !target && !selectable && !attackable && !attacktarget && !attackselectable)
+        {
+            Guide.gameObject.SetActive(true);
+            renderer = Guide.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = new Color(0.4f, 0.4f, 0.4f, 1.0f);
+            }
+        }
+        
+
         if (TurnManager.Instance.EnemyTurn)
         {
             Reset();
@@ -135,6 +152,7 @@ public class Tile : MonoBehaviour
         distance = 0;
 
         f = g = h = 0;
+
     }
     public void Findneighbors(float jumpheight, Tile target)
     {

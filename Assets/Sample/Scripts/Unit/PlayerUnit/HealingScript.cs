@@ -36,7 +36,7 @@ public class HealingScript : PlayerUnit
             {
                 if (!IsShowselect)
                 {
-                    string unitname = Unitname + " (Selected)";
+                    string unitname = Unitname;
                     UIManager.Instance.SetProfilePanel(unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
                     IsShowselect = true;
                 }
@@ -198,7 +198,7 @@ public class HealingScript : PlayerUnit
                     PlayerUnit target = hit.collider.GetComponent<PlayerUnit>();
                     if (CanAttack && target.InRange)
                     {
-                        target.currentHp += 4;
+                        target.currentHp += skill1Damage;
                         if(animator != null)
                         {
                             animator.SetTrigger("Attack1");
@@ -264,7 +264,7 @@ public class HealingScript : PlayerUnit
         foreach (GameObject t in TurnManager.Instance.playerunit)
         {
             PlayerUnit player = t.GetComponent<PlayerUnit>();
-            player.currentHp += 2;
+            player.currentHp += skill2Damage;
             player.IsHeal();
         }
 

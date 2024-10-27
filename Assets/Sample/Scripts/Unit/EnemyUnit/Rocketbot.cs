@@ -153,7 +153,7 @@ public class Rocketbot : EnemyUnit
                                 if (hit.collider.CompareTag("Player"))
                                 {
                                     PlayerUnit targetUnit = hit.collider.GetComponent<PlayerUnit>();
-                                    targetUnit.currentHp -= 5;
+                                    targetUnit.currentHp -= skill1Damage;
                                     targetUnit.IsBoomHit();
 
                                 }

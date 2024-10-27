@@ -2253,16 +2253,22 @@ MonoBehaviour:
   Unitname: Boombot
   ProfileImg: {fileID: 21300000, guid: 2ba6e5cb8eeb81345a720e345f003ac2, type: 3}
   statusUnit: 
+  Unittype: Damage
+  UnittypeSkill2: '-'
+  unittargettype: Single
+  unittargettypeskill2: '-'
   movearea: 10
   LeaderArea: 0
   movespeed: 3
   HpPoint: 4
   currentHp: 4
   currentstatus: 0
-  attackArea1: 0
+  attackArea1: 15
   attackArea2: 0
   WalkStack: 1
   currentWalkstack: 1
+  skill1Damage: 2
+  skill2Damage: 0
   Skill1CD: 1
   Skill2CD: 0
   currentSkill1CD: 0

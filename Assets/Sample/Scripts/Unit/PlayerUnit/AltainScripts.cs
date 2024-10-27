@@ -33,7 +33,7 @@ public class AltainScripts : PlayerUnit
             {
                 if (!IsShowselect)
                 {
-                    string unitname = Unitname + " (Selected)";
+                    string unitname = Unitname;
                     UIManager.Instance.SetProfilePanel(unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
                     IsShowselect = true;
                 }
@@ -256,7 +256,7 @@ public class AltainScripts : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
-                        enemy.currentHp -= 3;
+                        enemy.currentHp -= skill1Damage;
                         enemy.IsHit();
                         currentHp -= 1;
                         transform.LookAt(enemy.gameObject.transform.position);
@@ -307,7 +307,7 @@ public class AltainScripts : PlayerUnit
     }
     public void CheckMouseAttack2()
     {
-        currentHp += 2;
+        currentHp += skill2Damage;
         IsHeal();
         currentSkill2CD = Skill2CD;
 

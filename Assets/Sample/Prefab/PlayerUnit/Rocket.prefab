@@ -2962,6 +2962,7 @@ GameObject:
   - component: {fileID: 5750967761361986666}
   - component: {fileID: 3008400603642804707}
   - component: {fileID: 6582607287450028744}
+  - component: {fileID: 7188292701286113020}
   m_Layer: 0
   m_Name: Rocket_More
   m_TagString: Untagged
@@ -3022,6 +3023,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Object: {fileID: 6184855593478412721}
+--- !u!114 &7188292701286113020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883167740570507059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37610873037824c4ca5d7c4e3bd6216f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: 7876818278667781733}
 --- !u!1 &3923991504971356001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4918,16 +4932,22 @@ MonoBehaviour:
   Unitname: Rocket
   ProfileImg: {fileID: 21300000, guid: 2ae0e3aef5ed1a74a96d7f2529f070fe, type: 3}
   statusUnit: 
+  Unittype: Damage
+  UnittypeSkill2: Damage
+  unittargettype: InRange
+  unittargettypeskill2: Single
   movearea: 5
   LeaderArea: 10
   movespeed: 3
   HpPoint: 4
   currentHp: 4
   currentstatus: 0
-  attackArea1: 20
-  attackArea2: 20
+  attackArea1: 12
+  attackArea2: 12
   WalkStack: 2
   currentWalkstack: 0
+  skill1Damage: 3
+  skill2Damage: 6
   Skill1CD: 3
   Skill2CD: 4
   currentSkill1CD: 0

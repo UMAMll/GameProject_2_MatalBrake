@@ -47,7 +47,8 @@ public class Boombot : EnemyUnit
                 }
                 if (currentWalkstack <= 0)
                 {
-                    StartCoroutine(DelayTurn(2));
+                    CanMove = false;
+                    //StartCoroutine(DelayTurn(2));
                 }
                 else if (currentWalkstack > 0)
                 {
@@ -84,6 +85,7 @@ public class Boombot : EnemyUnit
                         else
                         {
                             Move();
+                            
                         }
                     }
                     
@@ -94,6 +96,7 @@ public class Boombot : EnemyUnit
                     TurnManager.Instance.ReMoveEnemyTurn();
                     print("11");
                     TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
+
                 }
 
             }
@@ -113,7 +116,7 @@ public class Boombot : EnemyUnit
                 {
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
-                    playertarget.currentHp -= 3;
+                    playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     currentWalkstack = 0;
                     moving = false;

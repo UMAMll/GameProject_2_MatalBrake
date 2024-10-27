@@ -3095,16 +3095,22 @@ MonoBehaviour:
   Unitname: Hamon
   ProfileImg: {fileID: 21300000, guid: 893ac74dbbf922a4db15c97a465e7beb, type: 3}
   statusUnit: 
+  Unittype: Damage
+  UnittypeSkill2: Damage
+  unittargettype: Single
+  unittargettypeskill2: Single
   movearea: 3
   LeaderArea: 10
   movespeed: 3
   HpPoint: 4
   currentHp: 4
   currentstatus: 0
-  attackArea1: 15
-  attackArea2: 10
+  attackArea1: 10
+  attackArea2: 8
   WalkStack: 2
   currentWalkstack: 0
+  skill1Damage: 5
+  skill2Damage: 3
   Skill1CD: 3
   Skill2CD: 3
   currentSkill1CD: 0

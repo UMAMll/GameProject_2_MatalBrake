@@ -3260,6 +3260,10 @@ MonoBehaviour:
   Unitname: Tele
   ProfileImg: {fileID: 21300000, guid: 1b8cc8a8651ee5a4d9d56d4d9af84f02, type: 3}
   statusUnit: 
+  Unittype: Summon
+  UnittypeSkill2: Buff
+  unittargettype: Ground
+  unittargettypeskill2: Single
   movearea: 5
   LeaderArea: 10
   movespeed: 3
@@ -3270,6 +3274,8 @@ MonoBehaviour:
   attackArea2: 0
   WalkStack: 2
   currentWalkstack: 0
+  skill1Damage: 1
+  skill2Damage: 0
   Skill1CD: 4
   Skill2CD: 6
   currentSkill1CD: 0

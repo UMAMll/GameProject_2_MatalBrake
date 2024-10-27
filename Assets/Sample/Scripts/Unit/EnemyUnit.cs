@@ -285,14 +285,4 @@ public class EnemyUnit : TacticSystem
 
         }
     }
-
-    public void Delay()
-    {
-        return;
-    }
-    public IEnumerator DelayTurn(float count)
-    {
-        yield return new WaitForSeconds(count);
-        CanMove = false;
-    }
 }

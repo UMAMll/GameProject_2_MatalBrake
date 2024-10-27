@@ -18,6 +18,8 @@ public class TacticSystem : MonoBehaviour
     public string Unitname;
     public Sprite ProfileImg;
     public string statusUnit;
+    public string Unittype,UnittypeSkill2;
+    public string unittargettype,unittargettypeskill2;
 
     public int movearea;
     public int LeaderArea;
@@ -37,6 +39,8 @@ public class TacticSystem : MonoBehaviour
 
     public int WalkStack;
     public int currentWalkstack;
+    public int skill1Damage;
+    public int skill2Damage;
     public int Skill1CD;
     public int Skill2CD;
     public int currentSkill1CD;
@@ -198,9 +202,6 @@ public class TacticSystem : MonoBehaviour
             currenttile.visited = true;
         }
         
-
-
-    StartLoop:
         while (process.Count > 0)
         {
 
@@ -209,7 +210,10 @@ public class TacticSystem : MonoBehaviour
             Selectabletiles.Add(t);
             if(t != null)
             {
-                t.selectable = true;
+                if (TurnManager.Instance.PlayerTurn)
+                {
+                    t.selectable = true;
+                }
                 if (t.distance < movearea)
                 {
                     foreach (Tile tile in t.adjacencyList)
@@ -223,10 +227,12 @@ public class TacticSystem : MonoBehaviour
                         }
                     }
                 }
-            }
-            else
-            {
-               goto StartLoop;
+                if (TurnManager.Instance.PlayerTurn)
+                {
+                    t.CheckTile();
+
+                }
+
             }
             
         }
@@ -245,6 +251,8 @@ public class TacticSystem : MonoBehaviour
             path.Push(next);
             next = next.parent;
         }
+        tile.CheckTile();
+
     }
 
     public void Move()
@@ -304,6 +312,8 @@ public class TacticSystem : MonoBehaviour
             if (tile != null)
             {
                 tile.Reset();
+                tile.CheckTile();
+
             }
 
         }
@@ -314,7 +324,8 @@ public class TacticSystem : MonoBehaviour
             if (t != null)
             {
                 t.GetComponent<Tile>().Reset();
-                
+                t.GetComponent<Tile>().CheckTile();
+
             }
         }
 
@@ -337,17 +348,27 @@ public class TacticSystem : MonoBehaviour
             return;
         }
         print("MouseEnter");
-        UIManager.Instance.IsShowProfile = true;
-        string unitname;
-        if (IsMyturn)
+        if (SearchMode.Instance.searchmode)
         {
-            print("Mouse On Select");
-            unitname = Unitname + " (Selected)";
-            UIManager.Instance.SetProfilePanel(Unitname + " (Selected)", ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
-        }
-        else
-        {
-            UIManager.Instance.SetProfilePanel(Unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
+            SearchMode.Instance.uipanel.gameObject.SetActive(true);
+            if (Skill1CD != 0)
+            {
+                SearchMode.Instance.UISet1Skill(ProfileImg, Unitname, movearea.ToString(), Unittype, skill1Damage.ToString(), attackArea1.ToString(), unittargettype, Skill1CD.ToString());
+            }
+            else if (Skill2CD == 0)
+            {
+                SearchMode.Instance.UISet1Skill(ProfileImg, Unitname, movearea.ToString(), Unittype, "-", "-", "-", "-");
+
+            }
+            if (Skill2CD != 0)
+            {
+                SearchMode.Instance.UISet2Skill(UnittypeSkill2, skill2Damage.ToString(), attackArea2.ToString(), unittargettypeskill2, Skill2CD.ToString());
+            }
+            else if(Skill2CD == 0)
+            {
+                SearchMode.Instance.UISet2Skill(UnittypeSkill2, "-", "-", "-", "-");
+
+            }
         }
     }
 
@@ -650,17 +671,19 @@ public class TacticSystem : MonoBehaviour
             return;
         }
         print("MouseEnter");
-        UIManager.Instance.IsShowProfile = true;
-        string unitname;
-        if (IsMyturn)
+        if (SearchMode.Instance.searchmode)
         {
-            print("Mouse On Select");
-            unitname = Unitname + " (Selected)";
-            UIManager.Instance.SetProfilePanel(Unitname + " (Selected)", ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
-        }
-        else
-        {
-            UIManager.Instance.SetProfilePanel(Unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
+            SearchMode.Instance.uipanel.gameObject.SetActive(true);
+            SearchMode.Instance.UISet1Skill(ProfileImg, Unitname, movearea.ToString(), Unittype, skill1Damage.ToString(), attackArea1.ToString(), unittargettype, Skill1CD.ToString());
+            if (Skill2CD != 0)
+            {
+                SearchMode.Instance.UISet2Skill(UnittypeSkill2, skill2Damage.ToString(), attackArea2.ToString(), unittargettypeskill2, Skill2CD.ToString());
+            }
+            else if (Skill2CD == 0)
+            {
+                SearchMode.Instance.UISet2Skill(UnittypeSkill2, "-", "-", "-", "-");
+
+            }
         }
     }
 
@@ -671,7 +694,7 @@ public class TacticSystem : MonoBehaviour
             return;
         }
         print("MouseExit");
-        UIManager.Instance.IsShowProfile = false;
+        SearchMode.Instance.uipanel.gameObject.SetActive(false);
 
     }
 

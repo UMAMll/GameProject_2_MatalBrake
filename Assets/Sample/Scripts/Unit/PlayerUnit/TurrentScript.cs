@@ -32,7 +32,7 @@ public class TurrentScript : PlayerUnit
             {
                 if (!IsShowselect)
                 {
-                    string unitname = Unitname + " (Selected)";
+                    string unitname = Unitname;
                     UIManager.Instance.SetProfilePanel(unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
                     IsShowselect = true;
                 }
@@ -262,7 +262,7 @@ public class TurrentScript : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
-                        enemy.currentHp -= 5;
+                        enemy.currentHp -= skill1Damage;
                         enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
@@ -343,7 +343,7 @@ public class TurrentScript : PlayerUnit
 
                         transform.LookAt(hit.collider.gameObject.transform.position);
 
-                        int damagehit = 3;
+                        int damagehit = skill2Damage;
                         foreach (var target in objectsInColliderskill2)
                         {
                             print("AttackEnemy");

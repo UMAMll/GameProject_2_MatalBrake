@@ -18,6 +18,7 @@ public class LittleDollScript : PlayerUnit
         if (!IsMyturn)
         {
             actionCanves.SetActive(false);
+            animator.SetBool("Post", false);
         }
         if (!TurnManager.Instance.IsStartGame)
         {
@@ -38,7 +39,7 @@ public class LittleDollScript : PlayerUnit
             {
                 if(!IsShowselect)
                 {
-                    string unitname = Unitname + " (Selected)";
+                    string unitname = Unitname;
                     UIManager.Instance.SetProfilePanel(unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
                     IsShowselect = true;
                 }
@@ -50,10 +51,15 @@ public class LittleDollScript : PlayerUnit
                     {
                         walkButton.interactable = true;
                     }
+
+                    if(isAttack == 0)
+                    {
+                        animator.SetBool("Post", false);
+                    }
+
                     if (!attacking && isAttack == 1 && CanAttack)
                     {
-
-                        animator.SetBool("Post", CanAttack);
+                        animator.SetBool("Post", true);
 
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
@@ -68,7 +74,7 @@ public class LittleDollScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 2 && CanAttack)
                     {
-                        animator.SetBool("Post", CanAttack);
+                        animator.SetBool("Post", true);
 
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
@@ -278,7 +284,7 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && enemy.attackable)
                     {
                         animator.SetTrigger("Attack");
-                        enemy.currentHp -= 8;
+                        enemy.currentHp -= skill1Damage;
                         enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
@@ -395,7 +401,7 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && enemy.attackable && !CDresetbuff)
                     {
                         animator.SetTrigger("Attack");
-                        enemy.currentHp -= 3;
+                        enemy.currentHp -= skill2Damage;
                         enemy.IsHit();
                         if(enemy.currentHp <= 0)
                         {
@@ -449,7 +455,7 @@ public class LittleDollScript : PlayerUnit
                     if (CanAttack && enemy.attackable && CDresetbuff)
                     {
                         animator.SetTrigger("Attack");
-                        enemy.currentHp -= 3;
+                        enemy.currentHp -= skill2Damage;
                         enemy.IsHit();
                         CDresetbuff = false;
                         currentSkill2CD = Skill2CD;

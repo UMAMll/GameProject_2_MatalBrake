@@ -40,7 +40,7 @@ public class RocketUnitScript : PlayerUnit
             {
                 if (!IsShowselect)
                 {
-                    string unitname = Unitname + " (Selected)";
+                    string unitname = Unitname;
                     UIManager.Instance.SetProfilePanel(unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
                     IsShowselect = true;
                 }
@@ -243,7 +243,7 @@ public class RocketUnitScript : PlayerUnit
                                 
                                 if (enemy.attackable)
                                 {
-                                    enemy.currentHp -= 4;
+                                    enemy.currentHp -= skill1Damage;
                                     enemy.IsBoomHit();
                                 }
                             }
@@ -277,10 +277,10 @@ public class RocketUnitScript : PlayerUnit
                         foreach (GameObject tile in tiles)
                         {
                             t = tile.GetComponent<Tile>();
-                            print(t);
                             if (t != null && CanAttack)
                             {
                                 t.Reset();
+                                t.CheckTile();
 
                             }
                         }
@@ -343,11 +343,10 @@ public class RocketUnitScript : PlayerUnit
                         foreach (GameObject tile in tiles)
                         {
                             t = tile.GetComponent<Tile>();
-                            print(t);
                             if (t != null && CanAttack)
                             {
                                 t.Reset();
-
+                                t.CheckTile();
                             }
                         }
                         SpacialCommand = false;
@@ -361,7 +360,7 @@ public class RocketUnitScript : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
-                        enemy.currentHp -= 10;
+                        enemy.currentHp -= skill2Damage;
                         enemy.IsBoomHit();
                         transform.LookAt(enemy.gameObject.transform.position);
                         moreGameobj.SetActive(true);
@@ -395,10 +394,11 @@ public class RocketUnitScript : PlayerUnit
                         foreach (GameObject tile in tiles)
                         {
                             t = tile.GetComponent<Tile>();
-                            print(t);
                             if (t != null && CanAttack)
                             {
                                 t.Reset();
+                                t.CheckTile();
+
                             }
                         }
                         SpacialCommand = false;

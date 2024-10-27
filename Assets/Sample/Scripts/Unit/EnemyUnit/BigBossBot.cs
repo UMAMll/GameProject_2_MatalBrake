@@ -168,7 +168,7 @@ public class BigBossBot : EnemyUnit
                     if (fate == 1)
                     {
                         Skill1CD = 1;
-                        playertarget.currentHp -= 3;
+                        playertarget.currentHp -= skill1Damage;
                         playertarget.IsHit();
                         currentWalkstack = 0;
                         moving = false;
@@ -182,7 +182,7 @@ public class BigBossBot : EnemyUnit
                         enemyunitcount.Clear();
                         enemyunitcount.AddRange(FindEnemy());
 
-                        int damage = 5 + (1 * (enemyunitcount.Count));
+                        int damage = skill1Damage + (1 * (enemyunitcount.Count));
                         playertarget.currentHp -= damage;
                         playertarget.IsHit();
                         currentWalkstack = 0;

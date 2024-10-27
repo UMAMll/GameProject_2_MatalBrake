@@ -45,7 +45,7 @@ public class CameraControl : MonoBehaviour
         if (VirtualCameraTurnLeft[1].Priority == 1 || VirtualCameraTurnRight[3].Priority == 1 || VirtualCameraTurnLeft[2].Priority == 1 || VirtualCameraTurnRight[2].Priority == 1)
         {
             Vector3 movementspacial = new Vector3(-moveHorizontal, moveVertical, 0);
-            transform.Translate(movementspacial * speed * Time.deltaTime);
+            transform.Translate(movementspacial * speed * Time.unscaledDeltaTime);
             
             if(transform.position.x >= maxpos.x)
             {
@@ -67,7 +67,7 @@ public class CameraControl : MonoBehaviour
         else
         {
             Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0);
-            transform.Translate(movement * speed * Time.deltaTime);
+            transform.Translate(movement * speed * Time.unscaledDeltaTime);
             
             if (transform.position.x >= maxpos.x)
             {

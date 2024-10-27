@@ -33,7 +33,7 @@ public class SompornScript : PlayerUnit
             {
                 if (!IsShowselect)
                 {
-                    string unitname = Unitname + " (Selected)";
+                    string unitname = Unitname;
                     UIManager.Instance.SetProfilePanel(unitname, ProfileImg, HpPoint, currentHp, currentstatus, statusUnit);
                     IsShowselect = true;
                 }
@@ -239,13 +239,13 @@ public class SompornScript : PlayerUnit
                             EnemyUnit unit = target.GetComponent<EnemyUnit>();
                             if (IsBuff)
                             {
-                                unit.currentHp -= 4;
+                                unit.currentHp -= skill1Damage +skill2Damage;
                                 unit.IsHit();
 
                             }
                             else
                             {
-                                unit.currentHp -= 2;
+                                unit.currentHp -= skill1Damage;
                                 unit.IsHit();
                             }
                             print("Attack" + unit.name + " " + unit.currentHp);

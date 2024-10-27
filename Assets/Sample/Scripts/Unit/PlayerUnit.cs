@@ -49,6 +49,7 @@ public class PlayerUnit : TacticSystem
         
         walkButton.interactable = false;
         CanAttack = false;
+        
     }
 
     /*void Update()
@@ -290,7 +291,7 @@ public class PlayerUnit : TacticSystem
         TurnManager.Instance.ReMoveAttackableBarrier();
         isAttack = 1;
         CanAttack = true;
-        float sphereRadius = attackArea1;
+        float sphereRadius = attackArea1+ (attackArea1/2);
         Vector3 sphereCenter = transform.position;
         Collider[] hitColliders = Physics.OverlapSphere(sphereCenter, sphereRadius);
 
@@ -334,6 +335,7 @@ public class PlayerUnit : TacticSystem
                     t.Reset();
                     Debug.Log("Skill");
                     t.attackselectable = true;
+                    t.CheckTile();
                 }
             }
 
@@ -350,6 +352,7 @@ public class PlayerUnit : TacticSystem
 
         }
         walkButton.interactable = false;
+        
     }
     protected void OnClickSkill2Button()
     {
@@ -369,7 +372,7 @@ public class PlayerUnit : TacticSystem
         TurnManager.Instance.ReMoveAttackableBarrier();
         CanAttack = true;
         isAttack = 2;
-        float sphereRadius = attackArea2;
+        float sphereRadius = attackArea2+ (attackArea2/2);
         Vector3 sphereCenter = transform.position;
         Collider[] hitColliders = Physics.OverlapSphere(sphereCenter, sphereRadius);
 
@@ -414,6 +417,7 @@ public class PlayerUnit : TacticSystem
                     Debug.Log("Skill");
 
                     t.attackselectable = true;
+                    t.CheckTile();
                 }
             }
 

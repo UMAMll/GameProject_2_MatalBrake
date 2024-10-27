@@ -151,7 +151,7 @@ public class Healbot : EnemyUnit
                 {
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
-                    playertarget.currentHp -= 1;
+                    playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     currentWalkstack = 0;
                     moving = false;
@@ -181,7 +181,7 @@ public class Healbot : EnemyUnit
                     {
                         if (!moving && CanAttack2)
                         {
-                            enemyUnit.currentHp += 2;
+                            enemyUnit.currentHp += skill2Damage;
                             enemyUnit.IsHeal();
                             currentSkill2CD = Skill2CD;
                         }

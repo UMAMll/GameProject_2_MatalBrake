@@ -64,6 +64,7 @@ public class TurnManager : MonoBehaviour
         {
             tile.GetComponent<Tile>().walkable = true;
             tile.GetComponent<Tile>().Reset();
+            tile.GetComponent<Tile>().CheckTile();
         }
     }
     public void RemoveInRangePlayer()

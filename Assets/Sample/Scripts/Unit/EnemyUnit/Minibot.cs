@@ -43,7 +43,8 @@ public class Minibot : EnemyUnit
                
                 if (currentWalkstack <= 0)
                 {
-                    StartCoroutine(DelayTurn(2));
+                    CanMove = false;
+                    //StartCoroutine(DelayTurn(2));
                 }
                 else if (currentWalkstack > 0)
                 {
@@ -116,7 +117,7 @@ public class Minibot : EnemyUnit
                 {
                     animator.SetTrigger("Attack");
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
-                    playertarget.currentHp -= 2;
+                    playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     transform.LookAt(playertarget.transform.position);
                     currentWalkstack = 0;

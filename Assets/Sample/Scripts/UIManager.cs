@@ -16,8 +16,6 @@ public class UIManager : MonoBehaviour
     public Image[] StatusIcon;
     public Sprite LeaderIcon;
     public Sprite CMErrorIcon;
-    public RectTransform uiDescription;
-    public TextMeshProUGUI descriptiontext;
 
     public GameObject leaderpanel;
     public TextMeshProUGUI leader;
@@ -64,11 +62,6 @@ public class UIManager : MonoBehaviour
             ProfilePanel.SetActive(false);
         }
 
-        if (!IsshowFollowupUI)
-        {
-            uiDescription.gameObject.SetActive(false);
-        }
-
         if (TurnManager.Instance.IsStartGame)
         {
             leaderpanel.SetActive(false);
@@ -85,13 +78,6 @@ public class UIManager : MonoBehaviour
     {
         leaderpanel.SetActive(true);
         leader.text = name;
-    }
-    public void UiFollowUpMouse(string text)
-    {
-        uiDescription.gameObject.SetActive(true);
-        Vector2 mouseposition = Input.mousePosition;
-        uiDescription.position = new Vector2(mouseposition.x + (uiDescription.sizeDelta.x/2),mouseposition.y + (uiDescription.sizeDelta.y / 2));
-        descriptiontext.text = text;
     }
     public void SetProfilePanel(string name, Sprite image, int maxhp, int curranthp,int statusCount,string status)
     {

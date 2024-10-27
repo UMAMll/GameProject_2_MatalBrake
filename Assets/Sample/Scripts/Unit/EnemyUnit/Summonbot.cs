@@ -164,7 +164,7 @@ public class Summonbot : EnemyUnit
                 {
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
-                    playertarget.currentHp -= 1;
+                    playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     currentWalkstack = 0;
                     moving = false;
