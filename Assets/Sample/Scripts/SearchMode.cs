@@ -51,7 +51,7 @@ public class SearchMode : MonoBehaviour
         searchModeButton.onClick.AddListener(SearchModeSet);
     }
 
-    void SearchModeSet()
+    public void SearchModeSet()
     {
         if (searchmode)
         {

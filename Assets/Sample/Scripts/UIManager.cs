@@ -25,6 +25,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject InGameCanvas;
     public GameObject WinCanvas, LoseCanvas;
+    public Sprite fullstar, nullstar;
+    public Image[] star; 
     public static UIManager instance;
     
     public static UIManager Instance

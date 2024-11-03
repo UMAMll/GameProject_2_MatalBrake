@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
+    public int Level;
     public int turn;
     public bool IsStartGame;
     private static TurnManager instance;
@@ -241,9 +243,43 @@ public class TurnManager : MonoBehaviour
                 UIManager.Instance.WinCanvas.SetActive(true);
 
                 //state clear
-                PlayerPrefs.SetInt("Level2", 1);
-                PlayerPrefs.SetInt("Level1", 2);
-                //enemy lost conition
+                int truestar = PlayerPrefs.GetInt("Level" + Level + "Star");
+                int currentchip = PlayerPrefs.GetInt("Chips");
+                int currentstar = 1;
+                PlayerPrefs.SetInt("Level" + (Level+1), 1);
+                PlayerPrefs.SetInt("Level" + Level, 2);
+                if(truestar < currentstar)
+                {
+                    PlayerPrefs.SetInt("Level" + Level + "Star", currentstar);
+                }
+                PlayerPrefs.SetInt("Chips", currentchip +=1);
+                UIManager.Instance.star[0].sprite = UIManager.Instance.fullstar;
+                UIManager.Instance.star[1].sprite = UIManager.Instance.nullstar;
+                UIManager.Instance.star[2].sprite = UIManager.Instance.nullstar;
+
+                if (turn <= 10)
+                {
+                    currentstar += 1;
+                    if (truestar < currentstar)
+                    {
+                        PlayerPrefs.SetInt("Level" + Level + "Star", currentstar);
+                    }
+                    PlayerPrefs.SetInt("Chips", currentchip +=1);
+                    UIManager.Instance.star[1].sprite = UIManager.Instance.fullstar;
+                    UIManager.Instance.star[2].sprite = UIManager.Instance.nullstar;
+                }
+
+                if (playerunit.Count >= 1)
+                {
+                    currentstar += 1;
+                    if (truestar < currentstar)
+                    {
+                        PlayerPrefs.SetInt("Level" + Level + "Star", currentstar);
+                    }
+                    PlayerPrefs.SetInt("Chips", currentchip += 1);
+                    UIManager.Instance.star[2].sprite = UIManager.Instance.fullstar;
+                }
+
             }
         }
         
