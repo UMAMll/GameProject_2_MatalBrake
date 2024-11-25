@@ -6,17 +6,5 @@ using UnityEngine.EventSystems;
 
 public class MouseUPUI : MonoBehaviour
 {
-    public SoundManager SoundManager;
-
-    private void Update()
-    {
-        if (SoundManager != null)
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                SoundManager.PlaySound1();
-            }
-        }
-    }
-
+    
 }

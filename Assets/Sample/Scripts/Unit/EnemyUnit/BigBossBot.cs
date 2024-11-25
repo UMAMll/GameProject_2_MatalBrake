@@ -12,6 +12,11 @@ public class BigBossBot : EnemyUnit
     public int fate;
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
+
         fate = 1;
         if (StandPosition == null)
         {
@@ -140,6 +145,10 @@ public class BigBossBot : EnemyUnit
             if(currentHp <= 1)
             {
                 currentHp = 1;
+                if(animator != null)
+                {
+                    animator.SetTrigger("Fate2");
+                }
                 IsPowerUp();
                 fate = 2;
                 WalkStack = 0;
@@ -164,7 +173,14 @@ public class BigBossBot : EnemyUnit
                 {
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
-
+                    if(animator != null)
+                    {
+                        animator.SetTrigger("Attack");
+                    }
+                    if(EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
                     if (fate == 1)
                     {
                         Skill1CD = 1;
@@ -205,6 +221,10 @@ public class BigBossBot : EnemyUnit
 
             if (!moving && CanAttack2)
             {
+                if(animator != null)
+                {
+                    animator.SetTrigger("Summon");
+                }
                 if(fate == 1)
                 {
                     SummonCount = 2;
@@ -220,12 +240,7 @@ public class BigBossBot : EnemyUnit
 
                 if (fate == 2)
                 {
-                    /*SummonCount = 4;
-                    for (int i = 0; i < SummonCount; i++)
-                    {
-                        int randomObject = Random.Range(0, summonObject.Length);
-                        Instantiate(summonObject[randomObject], summonTargetpos[i].transform.position, Quaternion.identity);
-                    }*/
+                    
                     for (int i = 0; i < summonSpacialTargetpos.Length; i++)
                     {
                         Instantiate(summonSpacialObject, summonSpacialTargetpos[i].transform.position, Quaternion.identity);

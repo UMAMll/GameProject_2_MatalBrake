@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TacticSystem : MonoBehaviour
 {
+    public SoundManager WalkSound;
+    public SoundManager EffectSound;
+
     public GameObject HPCanvas;
 
     List<Tile> Selectabletiles = new List<Tile>();
@@ -78,6 +81,7 @@ public class TacticSystem : MonoBehaviour
     public GameObject idleGameobj, moreGameobj;
     protected void Init()
     {
+        
         tiles = GameObject.FindGameObjectsWithTag("Tile");
         halfheight = GetComponent<Collider>().bounds.extents.y;
         rb = GetComponent<Rigidbody>();
@@ -99,6 +103,10 @@ public class TacticSystem : MonoBehaviour
             moreGameobj.SetActive(true);
             idleGameobj.SetActive(false);
             Moreanim.SetTrigger("Hurt");
+        }
+        if(EffectSound != null)
+        {
+            EffectSound.HurtSound();
         }
     }
     public void CheckTurnUnit()
@@ -129,6 +137,10 @@ public class TacticSystem : MonoBehaviour
     public void IsBoomHit()
     {
         BoomEffect.Play();
+        if(EffectSound != null)
+        {
+            EffectSound.ExplosionSound();
+        }
         if(animator != null)
         {
             animator.SetTrigger("Hurt");
@@ -144,10 +156,18 @@ public class TacticSystem : MonoBehaviour
     public void IsHeal()
     {
         HealEffect.Play();
+        if (EffectSound != null)
+        {
+            EffectSound.PowerUpSound();
+        }
     }
     public void IsPowerUp()
     {
         PowerUpEffect.Play();
+        if (EffectSound != null)
+        {
+            EffectSound.PowerUpSound();
+        }
     }
 
     public void GetCurrentTile()
@@ -278,7 +298,10 @@ public class TacticSystem : MonoBehaviour
                 {
                     animator.SetBool("Walk", true);
                 }
-
+                if (WalkSound != null)
+                {
+                    WalkSound.PlayWalkSound();
+                }
 
                 path.Pop();
             }
@@ -292,7 +315,10 @@ public class TacticSystem : MonoBehaviour
             if(animator != null)
             {
                 animator.SetBool("Walk", false);
-
+            }
+            if(WalkSound != null)
+            {
+                WalkSound.StopSoundLoop();
             }
         }
 

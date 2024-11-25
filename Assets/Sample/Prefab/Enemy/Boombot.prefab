@@ -2279,12 +2279,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6b3969fc26b95c43b4b22140bbfa8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WalkSound: {fileID: 0}
+  EffectSound: {fileID: 0}
   HPCanvas: {fileID: 2664931441564819311}
   tiles: []
   moving: 0
   attacking: 0
   Unitname: Boombot
-  ProfileImg: {fileID: 21300000, guid: 2ba6e5cb8eeb81345a720e345f003ac2, type: 3}
+  ProfileImg: {fileID: 21300000, guid: 066ebe9f2f8df3a46a186e7467476de0, type: 3}
   statusUnit: 
   Unittype: Damage
   UnittypeSkill2: '-'

@@ -5,6 +5,11 @@ public class LittleDollScript : PlayerUnit
     public bool CDresetbuff;
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSound");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSound");
+        EffectSound = es.GetComponent<SoundManager>();
+
         actionCanves.SetActive(false);
         Init();
         CanAttack = false;

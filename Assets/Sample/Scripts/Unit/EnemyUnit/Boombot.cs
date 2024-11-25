@@ -1,11 +1,17 @@
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class Boombot : EnemyUnit
 {
 
     private void Start()
     {
-        if(StandPosition == null)
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
+
+        if (StandPosition == null)
         {
             StandPosition = FindNearestStandTarget();
         }
@@ -85,7 +91,6 @@ public class Boombot : EnemyUnit
                         else
                         {
                             Move();
-                            
                         }
                     }
                     
@@ -114,11 +119,19 @@ public class Boombot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
+                    if(EffectSound != null)
+                    {
+                        EffectSound.ExplosionSound();
+                    }
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
                     playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     currentWalkstack = 0;
+                    if (animator != null)
+                    {
+                        animator.SetBool("Walk", false);
+                    }
                     moving = false;
                     currentSkill1CD = Skill1CD;
                 }

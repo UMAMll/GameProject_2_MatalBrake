@@ -1,14 +1,20 @@
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class Healbot : EnemyUnit
 {
     public bool Isheal;
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
+
         StandPosition = FindNearestStandTarget();
         Init();
     }
-    private async void Update()
+    private void Update()
     {
         if (!TurnManager.Instance.IsStartGame)
         {
@@ -62,7 +68,7 @@ public class Healbot : EnemyUnit
                     currentSkill2CD = 0;
                 }
 
-                if (currentSkill1CD == 0 && currentSkill1CD != Skill1CD)
+                if (currentSkill1CD == 0 && currentSkill1CD != Skill1CD && playersCanAttack.Count != 0)
                 {
                     if (!LowHealth)
                     {
@@ -73,7 +79,7 @@ public class Healbot : EnemyUnit
                         CanAttack1 = false;
                     }
                 }
-                else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD)
+                else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD || playersCanAttack.Count == 0)
                 {
                     CanAttack1 = false;
                 }
@@ -96,7 +102,7 @@ public class Healbot : EnemyUnit
 
                 if (CanMove && IsMyturn)
                 {
-                    if ((!CanAttack2 ||!CanAttack1 || playersCanAttack.Count == 0))
+                    if ((!CanAttack2 &&!CanAttack1))
                     {
                         if (!moving)
                         {
@@ -127,9 +133,8 @@ public class Healbot : EnemyUnit
                     
 
                 }
-                if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
+                if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2))
                 {
-                    await Task.Delay(2000);
                     TurnManager.Instance.ReMoveEnemyTurn();
                     TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
                 }
@@ -149,10 +154,27 @@ public class Healbot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
+                    if(WalkSound != null)
+                    {
+                        WalkSound.StopSoundLoop();
+                    }
+                    if (animator != null)
+                    {
+                        animator.SetBool("Walk", false);
+                    }
+                    if(EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
                     playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Attack");
+
+                    }
                     currentWalkstack = 0;
                     moving = false;
                     currentSkill1CD = Skill1CD;
@@ -167,7 +189,7 @@ public class Healbot : EnemyUnit
         {
             foreach (var target in TurnManager.Instance.EnemyUnits)
             {
-
+                
                 EnemyUnit enemyUnit = target.GetComponent<EnemyUnit>();
 
                 if (enemyUnit != null)
@@ -181,9 +203,27 @@ public class Healbot : EnemyUnit
                     {
                         if (!moving && CanAttack2)
                         {
+                            currentSkill1CD = Skill1CD;
+                            currentWalkstack = 0;
+                            if(WalkSound != null)
+                            {
+                                WalkSound.StopSoundLoop();
+                            }
+                            if (EffectSound != null)
+                            {
+                                EffectSound.PowerUpSound();
+                            }
+                            if (animator != null)
+                            {
+                                animator.SetBool("Walk", false);
+                            }
+                            if (animator != null)
+                            {
+                                animator.SetTrigger("Attack2");
+
+                            }
                             enemyUnit.currentHp += skill2Damage;
                             enemyUnit.IsHeal();
-                            currentSkill2CD = Skill2CD;
                         }
 
                     }

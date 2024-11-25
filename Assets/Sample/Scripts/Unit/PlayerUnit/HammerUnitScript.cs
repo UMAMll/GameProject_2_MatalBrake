@@ -4,6 +4,11 @@ public class HammerUnitScript : PlayerUnit
 {
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSound");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSound");
+        EffectSound = es.GetComponent<SoundManager>();
+
         actionCanves.SetActive(false);
         Init();
         CanAttack = false;
@@ -46,15 +51,7 @@ public class HammerUnitScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 1 && CanAttack)
                     {
-                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        RaycastHit hit;
-
-                        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                        {
-                            Vector3 targetPosition = hit.point;
-                            targetPosition.y = transform.position.y;
-                            transform.LookAt(targetPosition);
-                        }
+                        
                         CheckMouseAttack1();
                     }
                     if (!attacking && isAttack == 2 && CanAttack)
@@ -141,7 +138,8 @@ public class HammerUnitScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -181,9 +179,9 @@ public class HammerUnitScript : PlayerUnit
         {
             skill2Button.interactable = false;
         }
-        else if (currentSkill2CD <= 0)
-        {
-            currentSkill2CD = 0;
+        else if (currentSkill1CD <= 0)
+        { 
+            currentSkill1CD = 0;
             skill2Button.interactable = true;
         }
 
@@ -193,115 +191,58 @@ public class HammerUnitScript : PlayerUnit
 
     public void CheckMouseAttack1()
     {
-        if (Input.GetMouseButtonUp(1))
+        if (animator != null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            animator.SetTrigger("Attack1");
+        }
+        if (EffectSound != null)
+        {
+            EffectSound.PowerUpSound();
+        }
+        currentHp += skill1Damage;
+        IsHeal();
+        currentSkill1CD = Skill1CD;
 
-            Tile t;
-            if (Physics.Raycast(ray, out hit))
+        if (CMError)
+        {
+            if (SpacialCommand)
             {
-                if (hit.collider.tag == "Barrier")
-                {
-                    Barrier barrier = hit.collider.GetComponent<Barrier>();
-                    if (CanAttack && barrier.InRangeAttack)
-                    {
-
-                        barrier.IsAttack();
-                        transform.LookAt(barrier.gameObject.transform.position);
-                        currentSkill1CD = Skill1CD;
-                        if (CMError)
-                        {
-                            if (SpacialCommand)
-                            {
-                                TurnManager.Instance.currentCMOpoint -= 0;
-                            }
-                            else
-                            {
-                                TurnManager.Instance.currentCMOpoint -= (CMOtoUseSkill1 * 2);
-
-                            }
-                        }
-                        else
-                        {
-                            if (SpacialCommand)
-                            {
-                                TurnManager.Instance.currentCMOpoint -= 0;
-                            }
-                            else
-                            {
-                                TurnManager.Instance.currentCMOpoint -= CMOtoUseSkill1;
-
-                            }
-                        }
-                        foreach (GameObject tile in tiles)
-                        {
-                            t = tile.GetComponent<Tile>();
-                            print(t);
-                            if (t != null && CanAttack)
-                            {
-                                t.Reset();
-
-                            }
-                        }
-                        SpacialCommand = false;
-                        CanAttack = false;
-                        TurnManager.Instance.ReMoveAttackableEnemy();
-                        TurnManager.Instance.ReMoveAttackableBarrier();
-                    }
-                }
-                if (hit.collider.tag == "Enemy")
-                {
-                    EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
-                    if (CanAttack && enemy.attackable)
-                    {
-                        enemy.currentHp -= skill1Damage;
-                        enemy.IsHit();
-                        transform.LookAt(enemy.gameObject.transform.position);
-                        currentSkill1CD = Skill1CD;
-                        if (CMError)
-                        {
-                            if (SpacialCommand)
-                            {
-                                TurnManager.Instance.currentCMOpoint -= 0;
-                            }
-                            else
-                            {
-                                TurnManager.Instance.currentCMOpoint -= (CMOtoUseSkill1 * 2);
-
-                            }
-                        }
-                        else
-                        {
-                            if (SpacialCommand)
-                            {
-                                TurnManager.Instance.currentCMOpoint -= 0;
-                            }
-                            else
-                            {
-                                TurnManager.Instance.currentCMOpoint -= CMOtoUseSkill1;
-
-                            }
-                        }
-                        foreach (GameObject tile in tiles)
-                        {
-                            t = tile.GetComponent<Tile>();
-                            print(t);
-                            if (t != null && CanAttack)
-                            {
-                                t.Reset();
-                            }
-                        }
-                        SpacialCommand = false;
-                        CanAttack = false;
-                        TurnManager.Instance.ReMoveAttackableEnemy();
-                        TurnManager.Instance.ReMoveAttackableBarrier();
-                    }
-                }
+                TurnManager.Instance.currentCMOpoint -= 0;
+            }
+            else
+            {
+                TurnManager.Instance.currentCMOpoint -= (CMOtoUseSkill1 * 2);
 
             }
-
         }
+        else
+        {
+            if (SpacialCommand)
+            {
+                TurnManager.Instance.currentCMOpoint -= 0;
+            }
+            else
+            {
+                TurnManager.Instance.currentCMOpoint -= CMOtoUseSkill1;
+
+            }
+        }
+        Tile t;
+        foreach (GameObject tile in tiles)
+        {
+            t = tile.GetComponent<Tile>();
+            print(t);
+            if (t != null && CanAttack)
+            {
+                print(t.name + "Reset");
+                t.Reset();
+
+            }
+        }
+        SpacialCommand = false;
+        CanAttack = false;
+        TurnManager.Instance.ReMoveAttackableEnemy();
+        TurnManager.Instance.ReMoveAttackableBarrier();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -335,7 +276,11 @@ public class HammerUnitScript : PlayerUnit
                     {
 
                         transform.LookAt(hit.collider.gameObject.transform.position);
-
+                        if (animator != null)
+                        {
+                            animator.SetTrigger("Attack2");
+                        }
+                        
                         int damagehit = skill2Damage;
                         foreach (var target in objectsInColliderskill2)
                         {

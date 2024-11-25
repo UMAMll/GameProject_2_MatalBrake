@@ -185,14 +185,14 @@ public class PlayerUnit : TacticSystem
             skill2Button.interactable = true;
         }
     }*/
-    public IEnumerator WaitForDead()
+    /*public IEnumerator WaitForDead()
     {
         Destroy(gameObject);
         print("Unit is Dead");
         yield return new WaitForSeconds(0);
         //Destroy(gameObject);
 
-    }
+    }*/
     private void OnMouseUp()
     {
         

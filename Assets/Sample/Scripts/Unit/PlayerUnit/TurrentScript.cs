@@ -4,6 +4,11 @@ public class TurrentScript : PlayerUnit
 {
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSound");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSound");
+        EffectSound = es.GetComponent<SoundManager>();
+
         actionCanves.SetActive(false);
         Init();
         CanAttack = false;
@@ -44,8 +49,15 @@ public class TurrentScript : PlayerUnit
                     {
                         walkButton.interactable = true;
                     }
+
+                    if (isAttack == 0)
+                    {
+                        animator.SetBool("Post", false);
+                    }
+
                     if (!attacking && isAttack == 1 && CanAttack)
                     {
+                        animator.SetBool("Post", true);
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
 
@@ -59,6 +71,7 @@ public class TurrentScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 2 && CanAttack)
                     {
+                        animator.SetBool("Post", true);
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
 
@@ -148,7 +161,8 @@ public class TurrentScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -213,7 +227,15 @@ public class TurrentScript : PlayerUnit
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
-
+                        if (animator != null)
+                        {
+                            animator.SetTrigger("Attack");
+                            animator.SetBool("Post", false);
+                        }
+                        if(EffectSound != null)
+                        {
+                            EffectSound.AutoGunShotSound();
+                        }
                         barrier.IsAttack();
                         transform.LookAt(barrier.gameObject.transform.position);
                         currentSkill1CD = Skill1CD;
@@ -262,6 +284,15 @@ public class TurrentScript : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
+                        if (animator != null)
+                        {
+                            animator.SetTrigger("Attack");
+                            animator.SetBool("Post", false);
+                        }
+                        if (EffectSound != null)
+                        {
+                            EffectSound.AutoGunShotSound();
+                        }
                         enemy.currentHp -= skill1Damage;
                         enemy.IsHit();
                         transform.LookAt(enemy.gameObject.transform.position);
@@ -341,8 +372,6 @@ public class TurrentScript : PlayerUnit
                     if (CanAttack)
                     {
 
-                        transform.LookAt(hit.collider.gameObject.transform.position);
-
                         int damagehit = skill2Damage;
                         foreach (var target in objectsInColliderskill2)
                         {
@@ -351,13 +380,30 @@ public class TurrentScript : PlayerUnit
                             {
                                 Barrier barrier = target.GetComponent<Barrier>();
                                 barrier.IsAttack();
-                                
+                                if(animator != null)
+                                {
+                                    animator.SetTrigger("Attack");
+                                    animator.SetBool("Post",false);
+                                }
+                                if (EffectSound != null)
+                                {
+                                    EffectSound.AutoGunShotSound();
+                                }
                             }
                             if (target.CompareTag("Enemy"))
                             {
                                 EnemyUnit unit = target.GetComponent<EnemyUnit>();
                                 unit.currentHp -= damagehit;
                                 unit.IsHit();
+                                if (animator != null)
+                                {
+                                    animator.SetTrigger("Attack");
+                                    animator.SetBool("Post", false);
+                                }
+                                if (EffectSound != null)
+                                {
+                                    EffectSound.AutoGunShotSound();
+                                }
 
                             }
                         }

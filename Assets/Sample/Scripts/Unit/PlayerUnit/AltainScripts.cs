@@ -4,6 +4,11 @@ public class AltainScripts : PlayerUnit
 {
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSound");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSound");
+        EffectSound = es.GetComponent<SoundManager>();
+
         actionCanves.SetActive(false);
         Init();
         CanAttack = false;
@@ -141,7 +146,8 @@ public class AltainScripts : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -206,6 +212,10 @@ public class AltainScripts : PlayerUnit
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
+                        if(animator != null)
+                        {
+                            animator.SetTrigger("Attack1");
+                        }
 
                         barrier.IsAttack();
                         currentHp -= 1;
@@ -256,6 +266,11 @@ public class AltainScripts : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
+                        if (animator != null)
+                        {
+                            animator.SetTrigger("Attack1");
+                        }
+
                         enemy.currentHp -= skill1Damage;
                         enemy.IsHit();
                         currentHp -= 1;
@@ -307,6 +322,14 @@ public class AltainScripts : PlayerUnit
     }
     public void CheckMouseAttack2()
     {
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack2");
+        }
+        if(EffectSound != null)
+        {
+            EffectSound.PowerUpSound();
+        }
         currentHp += skill2Damage;
         IsHeal();
         currentSkill2CD = Skill2CD;

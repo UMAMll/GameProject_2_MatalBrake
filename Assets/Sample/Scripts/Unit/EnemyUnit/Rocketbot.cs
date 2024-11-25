@@ -5,6 +5,11 @@ public class Rocketbot : EnemyUnit
 {
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
+
         if (StandPosition == null)
         {
             StandPosition = FindNearestStandTarget();
@@ -99,7 +104,8 @@ public class Rocketbot : EnemyUnit
                 }
                 if ((!CanMove) && ( IsCharge || !CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
                 {
-                    
+                    TurnManager.Instance.ReMoveEnemyTurn();
+                    TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
                 }
 
             }
@@ -138,12 +144,26 @@ public class Rocketbot : EnemyUnit
                             }
                         }
                         print("Charge");
+                        if(animator != null)
+                        {
+                            animator.SetTrigger("Charge");
+                        }
+                        if(EffectSound != null)
+                        {
+                            EffectSound.PowerUpSound();
+                        }
+                        IsPowerUp();
                         currentWalkstack = 0;
                         IsCharge = true;
+                        currentSkill1CD = MaxChargeturn;
                         Chargeturn = MaxChargeturn;
                     }
                     if (IsCharge && Chargeturn == 0)
                     {
+                        if(animator != null)
+                        {
+                            animator.SetTrigger("Attack");
+                        }
                         RaycastHit hit;
                         for (int i = 0; i < targetAttack.Count; i++)
                         {

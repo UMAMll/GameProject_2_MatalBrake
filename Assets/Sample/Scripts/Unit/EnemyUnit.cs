@@ -86,6 +86,10 @@ public class EnemyUnit : TacticSystem
 
         if (currentHp <= 0)
         {
+            if(EffectSound != null)
+            {
+                EffectSound.DeadSound();
+            }
             animator.SetTrigger("Die");
             TurnManager.Instance.EnemyUnits.Remove(gameObject);
             TurnManager.Instance.ResetTile();

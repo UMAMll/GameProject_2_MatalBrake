@@ -1,16 +1,22 @@
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class Minibot : EnemyUnit
 {
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
+
         if (StandPosition == null)
         {
             StandPosition = FindNearestStandTarget();
         }
         Init();
     }
-    private async void Update()
+    private void Update()
     {
         if (!TurnManager.Instance.IsStartGame)
         {
@@ -103,7 +109,6 @@ public class Minibot : EnemyUnit
             }
 
         }
-        // health
         HealthManage();
     }
 
@@ -115,11 +120,24 @@ public class Minibot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
+                    if (WalkSound != null)
+                    {
+                        WalkSound.StopSoundLoop();
+                    }
+                    if (animator != null)
+                    {
+                        animator.SetBool("Walk", false);
+                    }
+                    if(EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
                     animator.SetTrigger("Attack");
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     transform.LookAt(playertarget.transform.position);
+                    
                     currentWalkstack = 0;
                     moving = false;
                     currentSkill1CD = Skill1CD;

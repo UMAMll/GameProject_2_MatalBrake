@@ -3253,6 +3253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e1be3238ec9a34585faa796cb9dc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WalkSound: {fileID: 0}
+  EffectSound: {fileID: 0}
   HPCanvas: {fileID: 1501382792030164020}
   tiles: []
   moving: 0

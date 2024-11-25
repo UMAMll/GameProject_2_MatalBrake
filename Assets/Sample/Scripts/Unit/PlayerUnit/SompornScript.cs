@@ -5,6 +5,11 @@ public class SompornScript : PlayerUnit
     public bool IsBuff;
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSound");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSound");
+        EffectSound = es.GetComponent<SoundManager>();
+
         actionCanves.SetActive(false);
         Init();
         CanAttack = false;
@@ -142,7 +147,8 @@ public class SompornScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            StartCoroutine(WaitForDead());
+            animator.SetTrigger("Die");
+            TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
         {
@@ -225,6 +231,15 @@ public class SompornScript : PlayerUnit
                     if (objectsInColliderskill1.Count == 0)
                     {
                         return;
+                    }
+
+                    if(animator != null)
+                    {
+                        animator.SetTrigger("Attack");
+                    }
+                    if(EffectSound != null)
+                    {
+                        EffectSound.ShotgunShotSound();
                     }
                     foreach (var target in objectsInColliderskill1)
                     {

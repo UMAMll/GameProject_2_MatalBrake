@@ -7,6 +7,11 @@ public class Summonbot : EnemyUnit
     public GameObject[] summonTargetpos;
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
+
         if (StandPosition == null)
         {
             StandPosition = FindNearestStandTarget();
@@ -35,6 +40,7 @@ public class Summonbot : EnemyUnit
                 OverLabFindArea();
                 OverLabEscapeArea();
                 OverLabAttackArea();
+                
                 Attack2();
                 if (!LowHealth)
                 {
@@ -66,7 +72,7 @@ public class Summonbot : EnemyUnit
                     currentSkill2CD = 0;
                 }
 
-                if (currentSkill1CD == 0 && currentSkill1CD != Skill1CD)
+                if (currentSkill1CD == 0 && currentSkill1CD != Skill1CD && playersCanAttack.Count != 0)
                 {
                     if (!LowHealth)
                     {
@@ -77,7 +83,7 @@ public class Summonbot : EnemyUnit
                         CanAttack1 = false;
                     }
                 }
-                else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD)
+                else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD || playersCanAttack.Count == 0)
                 {
                     CanAttack1 = false;
                 }
@@ -99,9 +105,9 @@ public class Summonbot : EnemyUnit
                 }
 
 
-                if (CanMove && IsMyturn)
+                if (!CanAttack2 && !CanAttack1)
                 {
-                    if (!CanAttack1 || playersCanAttack.Count == 0)
+                    if (CanMove)
                     {
 
                         if (!moving)
@@ -162,6 +168,10 @@ public class Summonbot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
+                    if (animator != null)
+                    {
+                        animator.SetBool("Walk", false);
+                    }
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
                     playertarget.currentHp -= skill1Damage;
@@ -192,11 +202,18 @@ public class Summonbot : EnemyUnit
             {
                 if (!moving && CanAttack2)
                 {
-                    int randomObject = Random.Range(0, summonObject.Length);
-                    int randompos = Random.Range(0, summonTargetpos.Length);
+                    currentSkill1CD = Skill1CD;
+                    currentWalkstack = 0;
+                    if (animator != null)
+                    {
+                        animator.SetBool("Walk", false);
+                    }
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Attack2");
 
-                    Instantiate(summonObject[randomObject], summonTargetpos[randompos].transform.position, Quaternion.identity);
-                    currentSkill2CD = Skill2CD;
+                    }
+                    
                 }
 
             }

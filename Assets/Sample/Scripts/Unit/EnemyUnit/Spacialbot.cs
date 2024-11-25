@@ -2,30 +2,24 @@ using UnityEngine;
 
 public class Spacialbot : EnemyUnit
 {
-    BigBossBot boss;
+    public BigBossBot boss;
     private void Start()
     {
-        if (!TurnManager.Instance.IsStartGame)
-        {
-            HPCanvas.SetActive(false);
-            return;
-        }
-
         if (TurnManager.Instance.IsStartGame)
         {
             HPCanvas.SetActive(true);
         }
 
         boss = FindObjectOfType<BigBossBot>();
-        if (boss == null)
+        if (boss != null)
         {
-           
-        }
-        else
-        {
-           
             StandPosition = boss.gameObject;
         }
+
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSoundRobot");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
+        EffectSound = es.GetComponent<SoundManager>();
 
         Init();
     }

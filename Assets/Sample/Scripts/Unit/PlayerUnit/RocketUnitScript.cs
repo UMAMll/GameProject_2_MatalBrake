@@ -5,6 +5,11 @@ public class RocketUnitScript : PlayerUnit
     
     private void Start()
     {
+        GameObject Sound = GameObject.FindGameObjectWithTag("WalkSound");
+        WalkSound = Sound.GetComponent<SoundManager>();
+        GameObject es = GameObject.FindGameObjectWithTag("EffectSound");
+        EffectSound = es.GetComponent<SoundManager>();
+
         IsRocket = true;
         idleGameobj.SetActive(true);
         moreGameobj.SetActive(false);
