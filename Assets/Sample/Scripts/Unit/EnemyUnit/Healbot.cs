@@ -11,7 +11,7 @@ public class Healbot : EnemyUnit
         GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
         EffectSound = es.GetComponent<SoundManager>();
 
-        StandPosition = FindNearestStandTarget();
+        
         Init();
     }
     private void Update()
@@ -39,18 +39,17 @@ public class Healbot : EnemyUnit
                 Attack2();
                 if (!LowHealth)
                 {
-                    if (!PlayerNearest)
+
+                    if (CanAttack1)
                     {
-                        if (CanAttack1)
-                        {
-                            Invoke("Attack1", 3.0f);
-                        }
+                        Invoke("Attack1", 3.0f);
                     }
 
                 }
 
                 if (currentWalkstack <= 0)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                 }
                 else if (currentWalkstack > 0)
@@ -102,6 +101,10 @@ public class Healbot : EnemyUnit
 
                 if (CanMove && IsMyturn)
                 {
+                    if (target == null)
+                    {
+                        StartCoroutine(WaitforCamera());
+                    }
                     if ((!CanAttack2 &&!CanAttack1))
                     {
                         if (!moving)
@@ -162,7 +165,11 @@ public class Healbot : EnemyUnit
                     {
                         animator.SetBool("Walk", false);
                     }
-                    if(EffectSound != null)
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
+                    if (EffectSound != null)
                     {
                         EffectSound.RifleShotSound();
                     }

@@ -19,7 +19,13 @@ public class RanDomSpacialAnimation : MonoBehaviour
             animator.SetTrigger("IdleSp");
         }
     }
-
+    public void stoppost()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("Post", false);
+        }
+    }
     public void DestroyUnitDie()
     {
         TurnManager.Instance.playerunit.Remove(Charector);

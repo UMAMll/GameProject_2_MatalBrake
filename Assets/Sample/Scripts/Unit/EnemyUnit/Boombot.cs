@@ -11,10 +11,7 @@ public class Boombot : EnemyUnit
         GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
         EffectSound = es.GetComponent<SoundManager>();
 
-        if (StandPosition == null)
-        {
-            StandPosition = FindNearestStandTarget();
-        }
+        
 
         Init();
     }
@@ -42,17 +39,15 @@ public class Boombot : EnemyUnit
                 OverLabAttackArea();
                 if (!LowHealth)
                 {
-                    if (!PlayerNearest)
-                    {
                         if (CanAttack1)
                         {
                             Invoke("Attack1", 3.0f);
                         }
-                    }
                     
                 }
                 if (currentWalkstack <= 0)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                     //StartCoroutine(DelayTurn(2));
                 }
@@ -65,6 +60,10 @@ public class Boombot : EnemyUnit
 
                 if (CanMove && IsMyturn)
                 {
+                    if (target == null)
+                    {
+                        StartCoroutine(WaitforCamera());
+                    }
                     if ((!CanAttack1 || playersCanAttack.Count == 0)|| PlayerNearest)
                     {
                         if (!moving)
@@ -125,6 +124,10 @@ public class Boombot : EnemyUnit
                     }
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
                     playertarget.currentHp -= skill1Damage;
                     playertarget.IsHit();
                     currentWalkstack = 0;

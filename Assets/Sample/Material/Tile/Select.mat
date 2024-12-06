@@ -13,7 +13,8 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  - _RECEIVE_SHADOWS_OFF
+  - _ALPHATEST_ON
+  - _SPECULAR_SETUP
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -87,7 +88,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0
+    - _AlphaClip: 1
     - _AlphaToMask: 0
     - _Blend: 2
     - _BlendModePreserveSpecular: 1
@@ -96,7 +97,7 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 1
@@ -109,7 +110,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _ReceiveShadows: 0
+    - _ReceiveShadows: 1
     - _SampleGI: 0
     - _Smoothness: 0.113
     - _SmoothnessTextureChannel: 0
@@ -117,7 +118,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 1
-    - _WorkflowMode: 1
+    - _WorkflowMode: 0
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 0.5018867, g: 0.5018867, b: 0.5018867, a: 1}

@@ -59,7 +59,7 @@ public class EnemyUnit : TacticSystem
             }
             
         }
-        else if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD)
+        if (currentSkill1CD != 0 || currentSkill1CD == Skill1CD)
         {
             CanAttack1 = false;
         }
@@ -68,7 +68,7 @@ public class EnemyUnit : TacticSystem
         {
             CanAttack2 = true;
         }
-        else if (currentSkill2CD != 0 || currentSkill2CD == Skill2CD)
+        if (currentSkill2CD != 0 || currentSkill2CD == Skill2CD)
         {
             CanAttack2 = false;
         }
@@ -86,10 +86,7 @@ public class EnemyUnit : TacticSystem
 
         if (currentHp <= 0)
         {
-            if(EffectSound != null)
-            {
-                EffectSound.DeadSound();
-            }
+            
             animator.SetTrigger("Die");
             TurnManager.Instance.EnemyUnits.Remove(gameObject);
             TurnManager.Instance.ResetTile();
@@ -215,7 +212,7 @@ public class EnemyUnit : TacticSystem
     }
     public void FindBoss()
     {
-        BigBossBot bosstarget = FindObjectOfType<BigBossBot>();
+        SpacialTarget bosstarget = FindObjectOfType<SpacialTarget>();
         target = bosstarget.gameObject;
     }
     public void FindNearestTarget()
@@ -263,8 +260,13 @@ public class EnemyUnit : TacticSystem
             }
         }
 
-        return nearest;
 
+        return nearest;
+    }
+    public IEnumerator WaitforCamera()
+    {
+        yield return new WaitForSeconds(2);
+        currentWalkstack = 0;
     }
     public void OnTriggerStay(Collider other)
     {

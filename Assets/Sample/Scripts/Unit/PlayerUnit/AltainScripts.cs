@@ -146,6 +146,7 @@ public class AltainScripts : PlayerUnit
         }
         if (currentHp <= 0)
         {
+            actionCanves.SetActive(false);
             animator.SetTrigger("Die");
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
@@ -209,6 +210,10 @@ public class AltainScripts : PlayerUnit
             {
                 if (hit.collider.tag == "Barrier")
                 {
+                    if (EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
@@ -263,6 +268,10 @@ public class AltainScripts : PlayerUnit
                 }
                 if (hit.collider.tag == "Enemy")
                 {
+                    if (EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {

@@ -34,6 +34,7 @@ public class Spacialbot : EnemyUnit
             {
                 if (currentWalkstack <= 0)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                 }
                 else if (currentWalkstack > 0)
@@ -87,7 +88,7 @@ public class Spacialbot : EnemyUnit
 
     public void CheckBoss()
     {
-        float sphereRadius = 2;
+        float sphereRadius = 3;
         Vector3 sphereCenter = transform.position;
         Collider[] hitColliders = Physics.OverlapSphere(sphereCenter, sphereRadius);
         foreach (var collider in hitColliders)

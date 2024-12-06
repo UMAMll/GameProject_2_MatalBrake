@@ -10,10 +10,7 @@ public class Rocketbot : EnemyUnit
         GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
         EffectSound = es.GetComponent<SoundManager>();
 
-        if (StandPosition == null)
-        {
-            StandPosition = FindNearestStandTarget();
-        }
+        
         Init();
     }
     private void Update()
@@ -40,6 +37,7 @@ public class Rocketbot : EnemyUnit
                 OverLabAttackArea();
                 if (IsCharge)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                 }
                 else
@@ -49,18 +47,18 @@ public class Rocketbot : EnemyUnit
 
                 if (!LowHealth)
                 {
-                    if (!PlayerNearest)
+
+                    if (CanAttack1)
                     {
-                        if (CanAttack1)
-                        {
-                            Invoke("Attack1", 3.0f);
-                        }
+                        Invoke("Attack1", 3.0f);
                     }
+
 
                 }
 
                 if (currentWalkstack <= 0)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                 }
                 else if (currentWalkstack > 0)
@@ -72,6 +70,10 @@ public class Rocketbot : EnemyUnit
 
                 if (CanMove && IsMyturn)
                 {
+                    if (target == null)
+                    {
+                        StartCoroutine(WaitforCamera());
+                    }
                     if ((!CanAttack1 || playersCanAttack.Count == 0) || PlayerNearest)
                     {
                         if (!moving)

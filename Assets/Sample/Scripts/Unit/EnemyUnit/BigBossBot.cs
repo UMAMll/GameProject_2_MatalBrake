@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,19 +42,19 @@ public class BigBossBot : EnemyUnit
         if (TurnManager.Instance.EnemyTurn)
         {
             if (IsMyturn)
-            {
+            { 
                 OverLabFindArea();
                 OverLabEscapeArea();
                 OverLabAttackArea();
                 Attack2();
 
-                if (!PlayerNearest)
+
+                if (CanAttack1)
                 {
-                    if (CanAttack1)
-                    {
-                        Invoke("Attack1", 3.0f);
-                    }
+                    Attack1();
+                    StartCoroutine(EndturnBoss(1));
                 }
+                
 
                 
                 if (currentWalkstack <= 0)
@@ -130,7 +131,7 @@ public class BigBossBot : EnemyUnit
 
 
                 }
-                if (!CanMove && (!CanAttack1 || playersCanAttack.Count == 0) && (!CanAttack2 || playersCanAttack.Count == 0))
+                if (!CanMove && (!CanAttack1) && (!CanAttack2))
                 {
                     TurnManager.Instance.ReMoveEnemyTurn();
                     TurnManager.Instance.NextEnemyTurn(EnemyNumber + 1);
@@ -159,6 +160,17 @@ public class BigBossBot : EnemyUnit
         }
         HealthManage();
     }
+    
+    IEnumerator EndturnBoss(int nowcd)
+    {
+        if(playersCanAttack.Count == 0)
+        {
+            yield return new WaitForSeconds(1);
+            currentSkill1CD = nowcd;
+            CanAttack1 = false;
+        }
+
+    }
     public void RestoreHealth()
     {
         currentHp = HpPoint/2;
@@ -173,7 +185,11 @@ public class BigBossBot : EnemyUnit
                 {
                     PlayerUnit playertarget = FindNearestAttackTarget().GetComponent<PlayerUnit>();
                     transform.LookAt(playertarget.transform.position);
-                    if(animator != null)
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
+                    if (animator != null)
                     {
                         animator.SetTrigger("Attack");
                     }

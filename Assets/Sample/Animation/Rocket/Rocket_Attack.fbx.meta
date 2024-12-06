@@ -24,7 +24,8 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: Event IsPlayIdleAnimation has a time (2.842002) outside
+      the clip's valid range (0.000000..2.250000). It will never be fired
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -64,6 +65,13 @@ ModelImporter:
       events:
       - time: 0.6753271
         functionName: IsPlayIdleAnimation
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.23112656
+        functionName: playParticleShot
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -115,6 +115,7 @@ public class LittleDollScript : PlayerUnit
             {
                 IsShowselect = false;
                 actionCanves.SetActive(false);
+                animator.SetBool("Post", false);
             }
             if (CMError)
             {
@@ -171,7 +172,8 @@ public class LittleDollScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
-            animator.SetTrigger("Die");
+            animator.SetTrigger("Die"); 
+            actionCanves.SetActive(false);
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
@@ -232,8 +234,17 @@ public class LittleDollScript : PlayerUnit
             Tile t;
             if (Physics.Raycast(ray, out hit))
             {
+                
                 if (hit.collider.tag == "Barrier")
                 {
+                    if (EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
@@ -285,6 +296,14 @@ public class LittleDollScript : PlayerUnit
                 }
                 if (hit.collider.tag == "Enemy")
                 {
+                    if (EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
@@ -348,12 +367,20 @@ public class LittleDollScript : PlayerUnit
             Tile t;
             if (Physics.Raycast(ray, out hit))
             {
+                
                 if (hit.collider.tag == "Barrier")
                 {
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
-
+                        if (EffectSound != null)
+                        {
+                            EffectSound.RifleShotSound();
+                        }
                         animator.SetTrigger("Attack");
                         barrier.hit.Play();
                         barrier.IsAttack();
@@ -402,9 +429,18 @@ public class LittleDollScript : PlayerUnit
                 }
                 if (hit.collider.tag == "Enemy")
                 {
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
+                    if (EffectSound != null)
+                    {
+                        EffectSound.RifleShotSound();
+                    }
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable && !CDresetbuff)
                     {
+                        
                         animator.SetTrigger("Attack");
                         enemy.currentHp -= skill2Damage;
                         enemy.IsHit();

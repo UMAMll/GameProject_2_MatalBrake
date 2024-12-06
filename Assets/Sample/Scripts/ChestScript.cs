@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ChestScript : MonoBehaviour
 {
+    
     public void Showchest(GameObject chest)
     {
         chest.SetActive(true);
@@ -83,7 +84,30 @@ public class ChestScript : MonoBehaviour
             }
         }
     }
-
+    public void AddDamagePlayer()
+    {
+        foreach (var player in TurnManager.Instance.playerunit)
+        {
+            PlayerUnit p = player.GetComponent<PlayerUnit>();
+            if (p != null)
+            {
+                p.skill1Damage = 20;
+                p.skill2Damage = 20;
+            }
+        }
+    }
+    public void ResetCDPlayer()
+    {
+        foreach (var player in TurnManager.Instance.playerunit)
+        {
+            PlayerUnit p = player.GetComponent<PlayerUnit>();
+            if (p != null)
+            {
+                p.currentSkill1CD = 0;
+                p.currentSkill2CD = 0;
+            }
+        }
+    }
     public void AddMoveArea()
     {
         foreach (var player in TurnManager.Instance.playerunit)

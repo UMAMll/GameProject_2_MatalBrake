@@ -18,12 +18,13 @@ public class UIManager : MonoBehaviour
     public Sprite CMErrorIcon;
 
     public GameObject leaderpanel;
-    public TextMeshProUGUI leader;
+    public Image leader;
 
     public bool IsShowProfile;
     public bool IsshowFollowupUI;
 
     public GameObject InGameCanvas;
+    public bool Showmode;
     public GameObject WinCanvas, LoseCanvas;
     public Sprite fullstar, nullstar;
     public Image[] star; 
@@ -59,6 +60,19 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyUp(KeyCode.Escape))
+        {
+            if(Showmode)
+            {
+                Showmode = false;
+            }
+            else if(!Showmode)
+            {
+                InGameCanvas.SetActive(false) ;
+                Showmode = true;
+            }
+
+        }
         if (!IsShowProfile)
         {
             ProfilePanel.SetActive(false);
@@ -67,7 +81,10 @@ public class UIManager : MonoBehaviour
         if (TurnManager.Instance.IsStartGame)
         {
             leaderpanel.SetActive(false);
-            InGameCanvas.SetActive(true);
+            if (!Showmode)
+            {
+                InGameCanvas.SetActive(true);
+            }
         }
 
         if (!TurnManager.Instance.IsStartGame)
@@ -76,10 +93,10 @@ public class UIManager : MonoBehaviour
             TurnManager.Instance.RemoveThisTurn();
         }
     }
-    public void SetLeader(string name)
+    public void SetLeader(Sprite img)
     {
         leaderpanel.SetActive(true);
-        leader.text = name;
+        leader.sprite = img;
     }
     public void SetProfilePanel(string name, Sprite image, int maxhp, int curranthp,int statusCount,string status)
     {

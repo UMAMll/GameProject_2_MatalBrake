@@ -69,7 +69,7 @@ public class TacticSystem : MonoBehaviour
 
     [Header("Effect")]
     public ParticleSystem HitEffect;
-    public ParticleSystem BoomEffect, HealEffect, PowerUpEffect, MyTurnEffect;
+    public ParticleSystem BoomEffect, HealEffect, PowerUpEffect, MyTurnEffect,GunflashEffect;
     bool isplay;
 
     [Header("Animation")]
@@ -104,10 +104,7 @@ public class TacticSystem : MonoBehaviour
             idleGameobj.SetActive(false);
             Moreanim.SetTrigger("Hurt");
         }
-        if(EffectSound != null)
-        {
-            EffectSound.HurtSound();
-        }
+        
     }
     public void CheckTurnUnit()
     {

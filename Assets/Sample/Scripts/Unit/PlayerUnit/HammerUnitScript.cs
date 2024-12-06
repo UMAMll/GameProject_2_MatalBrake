@@ -138,6 +138,7 @@ public class HammerUnitScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
+            actionCanves.SetActive(false);
             animator.SetTrigger("Die");
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
@@ -280,7 +281,10 @@ public class HammerUnitScript : PlayerUnit
                         {
                             animator.SetTrigger("Attack2");
                         }
-                        
+                        if (EffectSound != null)
+                        {
+                            EffectSound.RifleShotSound();
+                        }
                         int damagehit = skill2Damage;
                         foreach (var target in objectsInColliderskill2)
                         {

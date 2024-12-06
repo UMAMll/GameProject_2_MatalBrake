@@ -148,6 +148,7 @@ public class TelephoneScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
+            actionCanves.SetActive(false );
             animator.SetTrigger("Die");
             TurnManager.Instance.playerunit.Remove(gameObject);
         }

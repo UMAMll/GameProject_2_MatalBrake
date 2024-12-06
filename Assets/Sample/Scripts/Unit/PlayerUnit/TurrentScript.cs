@@ -106,6 +106,7 @@ public class TurrentScript : PlayerUnit
             {
                 IsShowselect = false;
                 actionCanves.SetActive(false);
+                animator.SetBool("Post", false);
             }
             if (CMError)
             {
@@ -162,6 +163,7 @@ public class TurrentScript : PlayerUnit
         if (currentHp <= 0)
         {
             animator.SetTrigger("Die");
+            actionCanves.SetActive(false );
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
         if (currentHp > HpPoint)
@@ -227,10 +229,14 @@ public class TurrentScript : PlayerUnit
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
+                        if (GunflashEffect != null)
+                        {
+                            GunflashEffect.Play();
+                        }
                         if (animator != null)
                         {
                             animator.SetTrigger("Attack");
-                            animator.SetBool("Post", false);
+                            
                         }
                         if(EffectSound != null)
                         {
@@ -284,10 +290,14 @@ public class TurrentScript : PlayerUnit
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {
+                        if (GunflashEffect != null)
+                        {
+                            GunflashEffect.Play();
+                        }
                         if (animator != null)
                         {
                             animator.SetTrigger("Attack");
-                            animator.SetBool("Post", false);
+                            
                         }
                         if (EffectSound != null)
                         {
@@ -380,10 +390,13 @@ public class TurrentScript : PlayerUnit
                             {
                                 Barrier barrier = target.GetComponent<Barrier>();
                                 barrier.IsAttack();
-                                if(animator != null)
+                                if (GunflashEffect != null)
+                                {
+                                    GunflashEffect.Play();
+                                }
+                                if (animator != null)
                                 {
                                     animator.SetTrigger("Attack");
-                                    animator.SetBool("Post",false);
                                 }
                                 if (EffectSound != null)
                                 {
@@ -395,10 +408,13 @@ public class TurrentScript : PlayerUnit
                                 EnemyUnit unit = target.GetComponent<EnemyUnit>();
                                 unit.currentHp -= damagehit;
                                 unit.IsHit();
+                                if (GunflashEffect != null)
+                                {
+                                    GunflashEffect.Play();
+                                }
                                 if (animator != null)
                                 {
                                     animator.SetTrigger("Attack");
-                                    animator.SetBool("Post", false);
                                 }
                                 if (EffectSound != null)
                                 {

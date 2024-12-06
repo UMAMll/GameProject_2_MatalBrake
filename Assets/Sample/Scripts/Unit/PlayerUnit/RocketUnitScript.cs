@@ -158,6 +158,7 @@ public class RocketUnitScript : PlayerUnit
         {
             moreGameobj.SetActive(true);
             idleGameobj.SetActive(false);
+            actionCanves.SetActive(false);
             Moreanim.SetTrigger("Die");
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
@@ -236,6 +237,10 @@ public class RocketUnitScript : PlayerUnit
                 {
                     if (CanAttack)
                     {
+                        if (GunflashEffect != null)
+                        {
+                            GunflashEffect.Play();
+                        }
                         moreGameobj.SetActive(true);
                         idleGameobj.SetActive(false);
                         Moreanim.SetTrigger("Attack1");
@@ -311,6 +316,14 @@ public class RocketUnitScript : PlayerUnit
             {
                 if (hit.collider.tag == "Barrier")
                 {
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
+                    if(EffectSound != null)
+                    {
+                        EffectSound.ExplosionSound();
+                    }
                     Barrier barrier = hit.collider.GetComponent<Barrier>();
                     if (CanAttack && barrier.InRangeAttack)
                     {
@@ -362,6 +375,10 @@ public class RocketUnitScript : PlayerUnit
                 }
                 if (hit.collider.tag == "Enemy")
                 {
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
                     EnemyUnit enemy = hit.collider.GetComponent<EnemyUnit>();
                     if (CanAttack && enemy.attackable)
                     {

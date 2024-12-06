@@ -12,10 +12,7 @@ public class Summonbot : EnemyUnit
         GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
         EffectSound = es.GetComponent<SoundManager>();
 
-        if (StandPosition == null)
-        {
-            StandPosition = FindNearestStandTarget();
-        }
+        
         Init();
     }
     private void Update()
@@ -41,20 +38,30 @@ public class Summonbot : EnemyUnit
                 OverLabEscapeArea();
                 OverLabAttackArea();
                 
-                Attack2();
+                if (currentHp > (HpPoint / 2))
+                {
+                    CanAttack2 = false;
+                    IsSummon = false;
+                }
+
+                if (currentHp <= (HpPoint / 2))
+                {
+                    Attack2();
+                    IsSummon = true;
+                }
                 if (!LowHealth)
                 {
-                    if (!PlayerNearest)
+
+                    if (CanAttack1)
                     {
-                        if (CanAttack1)
-                        {
-                            Invoke("Attack1", 3.0f);
-                        }
+                        Invoke("Attack1", 3.0f);
                     }
+
 
                 }
                 if (currentWalkstack <= 0)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                 }
                 else if (currentWalkstack > 0)
@@ -109,6 +116,10 @@ public class Summonbot : EnemyUnit
                 {
                     if (CanMove)
                     {
+                        if (target == null)
+                        {
+                            StartCoroutine(WaitforCamera());
+                        }
 
                         if (!moving)
                         {
@@ -168,6 +179,10 @@ public class Summonbot : EnemyUnit
             {
                 if (currentSkill1CD == 0)
                 {
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
                     if (animator != null)
                     {
                         animator.SetBool("Walk", false);
@@ -188,22 +203,16 @@ public class Summonbot : EnemyUnit
     {
         if (currentSkill2CD == 0)
         {
-            if(currentHp > (HpPoint/2))
-            {
-                CanAttack2 = false;
-                IsSummon = false;
-            }
-
-            if (currentHp <= (HpPoint /2))
-            {
-                IsSummon = true;
-            }
+            
             if (IsSummon)
             {
-                if (!moving && CanAttack2)
+                if (CanAttack2)
                 {
                     currentSkill1CD = Skill1CD;
                     currentWalkstack = 0;
+                    currentSkill2CD = Skill2CD;
+                    IsSummon = false;
+
                     if (animator != null)
                     {
                         animator.SetBool("Walk", false);

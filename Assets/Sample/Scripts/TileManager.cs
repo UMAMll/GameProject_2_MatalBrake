@@ -10,8 +10,8 @@ public class TileManager : MonoBehaviour
     void Start()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
-        tablemode = false;
         tableModeButton.onClick.AddListener(TableModeSet);
+        TableModeSet();
     }
 
     void TableModeSet()

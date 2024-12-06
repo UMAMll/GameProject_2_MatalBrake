@@ -142,6 +142,7 @@ public class HealingScript : PlayerUnit
         }
         if (currentHp <= 0)
         {
+            actionCanves.SetActive(false);
             animator.SetTrigger("Die");
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
@@ -210,6 +211,7 @@ public class HealingScript : PlayerUnit
 
                         }
                         target.IsHeal();
+                        transform.LookAt(target.transform.position);
                         currentSkill1CD = Skill1CD;
                         objectsInColliderskill1.Clear();
                         if (CMError)
@@ -265,7 +267,10 @@ public class HealingScript : PlayerUnit
             animator.SetTrigger("Attack2");
 
         }
-
+        if (GunflashEffect != null)
+        {
+            GunflashEffect.Play();
+        }
         foreach (GameObject t in TurnManager.Instance.playerunit)
         {
             PlayerUnit player = t.GetComponent<PlayerUnit>();

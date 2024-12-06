@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
+    public SoundManager sound;
     public int Level;
     public int turn;
     public bool IsStartGame;
@@ -213,7 +214,14 @@ public class TurnManager : MonoBehaviour
     {
         currentCMOpoint = MaxCMOpoint;
     }
-
+    public void RemoveLeader()
+    {
+        foreach (GameObject p in playerunit)
+        {
+            PlayerUnit player = p.GetComponent<PlayerUnit>();
+            player.IsLeader = false;
+        }
+    }
     private void Update()
     {
         if(!HaveLeader && IsStartGame)
@@ -231,6 +239,10 @@ public class TurnManager : MonoBehaviour
             if (playerunit.Count == 0)
             {
                 print("EnemyWin");
+                if (sound != null)
+                {
+                    sound.GameLoseSound();
+                }
                 IsStartGame = false;
                 //player Lostconition
                 UIManager.Instance.LoseCanvas.SetActive(true);
@@ -238,10 +250,18 @@ public class TurnManager : MonoBehaviour
             }
             if (EnemyUnits.Count == 0)
             {
+                if(sound != null)
+                {
+                    sound.GameWinSound();
+                }
                 print("Player win");
                 IsStartGame = false;
                 UIManager.Instance.WinCanvas.SetActive(true);
-
+                foreach (GameObject p in playerunit)
+                {
+                    PlayerUnit player = p.GetComponent<PlayerUnit>();
+                    player.actionCanves.SetActive(false);
+                }
                 //state clear
                 int truestar = PlayerPrefs.GetInt("Level" + Level + "Star");
                 int currentchip = PlayerPrefs.GetInt("Chips");
@@ -257,7 +277,7 @@ public class TurnManager : MonoBehaviour
                 UIManager.Instance.star[1].sprite = UIManager.Instance.nullstar;
                 UIManager.Instance.star[2].sprite = UIManager.Instance.nullstar;
 
-                if (turn <= 10)
+                if (turn <= 15)
                 {
                     currentstar += 1;
                     if (truestar < currentstar)
@@ -269,7 +289,7 @@ public class TurnManager : MonoBehaviour
                     UIManager.Instance.star[2].sprite = UIManager.Instance.nullstar;
                 }
 
-                if (playerunit.Count >= 1)
+                if (playerunit.Count >= 3)
                 {
                     currentstar += 1;
                     if (truestar < currentstar)

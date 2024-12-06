@@ -32,7 +32,7 @@ public class DestroyObject : MonoBehaviour
             print("Summon");
             Instantiate(sumbot.summonObject[randomObject], sumbot.summonTargetpos[randompos].transform.position, Quaternion.identity);
             sumbot.currentWalkstack = 1;
-            sumbot.currentSkill2CD = sumbot.Skill2CD;
+            
 
         }
 

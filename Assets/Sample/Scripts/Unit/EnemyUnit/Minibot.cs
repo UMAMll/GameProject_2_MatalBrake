@@ -10,10 +10,7 @@ public class Minibot : EnemyUnit
         GameObject es = GameObject.FindGameObjectWithTag("EffectSoundRobot");
         EffectSound = es.GetComponent<SoundManager>();
 
-        if (StandPosition == null)
-        {
-            StandPosition = FindNearestStandTarget();
-        }
+        
         Init();
     }
     private void Update()
@@ -49,6 +46,7 @@ public class Minibot : EnemyUnit
                
                 if (currentWalkstack <= 0)
                 {
+                    animator.SetBool("Walk",false);
                     CanMove = false;
                     //StartCoroutine(DelayTurn(2));
                 }
@@ -60,6 +58,10 @@ public class Minibot : EnemyUnit
 
                 if (CanMove && IsMyturn)
                 {
+                    if(target == null)
+                    {
+                        StartCoroutine(WaitforCamera());
+                    }
                     if (!CanAttack1 || playersCanAttack.Count == 0)
                     {
                         
@@ -112,6 +114,7 @@ public class Minibot : EnemyUnit
         HealthManage();
     }
 
+    
     public void Attack1()
     {
         if (CanAttack1)
@@ -128,7 +131,11 @@ public class Minibot : EnemyUnit
                     {
                         animator.SetBool("Walk", false);
                     }
-                    if(EffectSound != null)
+                    if (GunflashEffect != null)
+                    {
+                        GunflashEffect.Play();
+                    }
+                    if (EffectSound != null)
                     {
                         EffectSound.RifleShotSound();
                     }

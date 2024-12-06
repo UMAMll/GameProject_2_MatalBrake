@@ -50,8 +50,19 @@ public class SompornScript : PlayerUnit
                     {
                         walkButton.interactable = true;
                     }
+                    if (isAttack == 0)
+                    {
+                        if (animator != null)
+                        {
+                            animator.SetBool("Post", false);
+                        }
+                    }
                     if (!attacking && isAttack == 1 && CanAttack)
                     {
+                        if (animator != null)
+                        {
+                            animator.SetBool("Post", true);
+                        }
                         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
 
@@ -65,7 +76,7 @@ public class SompornScript : PlayerUnit
                     }
                     if (!attacking && isAttack == 2 && CanAttack)
                     {
-                        
+
                         CheckMouseAttack2();
                     }
                 }
@@ -89,6 +100,10 @@ public class SompornScript : PlayerUnit
             }
             if (!IsMyturn)
             {
+                if (animator != null)
+                {
+                    animator.SetBool("Post", false);
+                }
                 IsShowselect = false;
                 actionCanves.SetActive(false);
             }
@@ -142,11 +157,18 @@ public class SompornScript : PlayerUnit
         //not playerturn
         else
         {
+
+            if (animator != null)
+            {
+                animator.SetBool("Post", false);
+            }
+
             TurnManager.Instance.Endturnobject.SetActive(false);
             actionCanves.SetActive(false);
         }
         if (currentHp <= 0)
         {
+            actionCanves.SetActive(false );
             animator.SetTrigger("Die");
             TurnManager.Instance.playerunit.Remove(gameObject);
         }
@@ -227,17 +249,21 @@ public class SompornScript : PlayerUnit
                 
                 if (CanAttack)
                 {
+                    
                     print("ObjectCount = " +objectsInColliderskill1.Count);
                     if (objectsInColliderskill1.Count == 0)
                     {
                         return;
                     }
-
-                    if(animator != null)
+                    if (GunflashEffect != null)
                     {
-                        animator.SetTrigger("Attack");
+                        GunflashEffect.Play();
                     }
-                    if(EffectSound != null)
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Attack1");
+                    }
+                    if (EffectSound != null)
                     {
                         EffectSound.ShotgunShotSound();
                     }
@@ -246,6 +272,7 @@ public class SompornScript : PlayerUnit
                         print("AttackEnemy");
                         if (target.CompareTag("Barrier"))
                         {
+
                             Barrier barrier = target.GetComponent<Barrier>();
                             barrier.IsAttack();
                         }
@@ -306,6 +333,7 @@ public class SompornScript : PlayerUnit
 
                         }
                     }
+                    
                     SpacialCommand = false;
                     CanAttack = false;
                     TurnManager.Instance.ReMoveAttackableEnemy();
@@ -321,6 +349,10 @@ public class SompornScript : PlayerUnit
     public void CheckMouseAttack2()
     {
         IsBuff = true;
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack2");
+        }
         IsPowerUp();
         currentSkill2CD = Skill2CD;
 

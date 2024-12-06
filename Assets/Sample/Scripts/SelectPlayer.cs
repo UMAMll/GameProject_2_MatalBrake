@@ -73,6 +73,7 @@ public class SelectPlayer : MonoBehaviour
         {
             player1unlock.SetActive(true);
             PlayerButton[0].image.sprite = unlockimg;
+            uiunlock[0].unlockbutton.SetActive(false);
         }
 
         if (Player2 == 0)
@@ -83,6 +84,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player2 == 1)
         {
             player2unlock.SetActive(true);
+            uiunlock[1].unlockbutton.SetActive(false);
             PlayerButton[1].image.sprite = unlockimg;
         }
 
@@ -94,6 +96,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player3 == 1)
         {
             player3unlock.SetActive(true);
+            uiunlock[2].unlockbutton.SetActive(false);
             PlayerButton[2].image.sprite = unlockimg;
         }
 
@@ -105,6 +108,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player4 == 1)
         {
             player4unlock.SetActive(true);
+            uiunlock[3].unlockbutton.SetActive(false);
             PlayerButton[3].image.sprite = unlockimg;
         }
 
@@ -116,6 +120,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player5 == 1)
         {
             player5unlock.SetActive(true);
+            uiunlock[4].unlockbutton.SetActive(false);
             PlayerButton[4].image.sprite = unlockimg;
         }
 
@@ -127,6 +132,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player6 == 1)
         {
             player6unlock.SetActive(true);
+            uiunlock[5].unlockbutton.SetActive(false);
             PlayerButton[5].image.sprite = unlockimg;
         }
 
@@ -138,6 +144,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player7 == 1)
         {
             player7unlock.SetActive(true);
+            uiunlock[6].unlockbutton.SetActive(false);
             PlayerButton[6].image.sprite = unlockimg;
         }
 
@@ -149,6 +156,7 @@ public class SelectPlayer : MonoBehaviour
         if (Player8 == 1)
         {
             player8unlock.SetActive(true);
+            uiunlock[7].unlockbutton.SetActive(false);
             PlayerButton[7].image.sprite = unlockimg;
         }
     }
