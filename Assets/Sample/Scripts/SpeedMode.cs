@@ -20,6 +20,7 @@ public class SpeedMode : MonoBehaviour
             Speedmode = false;
             SpeedModeButton.image.sprite = ModeOff;
             Time.timeScale = 1;
+            UIManager.instance.speedmode = 1;
 
         }
         else
@@ -27,6 +28,7 @@ public class SpeedMode : MonoBehaviour
             Speedmode = true;
             SpeedModeButton.image.sprite = ModeOn;
             Time.timeScale = 2;
+            UIManager.instance.speedmode= 2;
         }
     }
 }

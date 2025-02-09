@@ -27,7 +27,12 @@ public class UIManager : MonoBehaviour
     public bool Showmode;
     public GameObject WinCanvas, LoseCanvas;
     public Sprite fullstar, nullstar;
-    public Image[] star; 
+    public Image[] star;
+
+    public GameObject MenuCanvas;
+    public bool Menushow;
+    public float speedmode;
+
     public static UIManager instance;
     
     public static UIManager Instance
@@ -36,12 +41,10 @@ public class UIManager : MonoBehaviour
         {
             if (instance == null)
             {
-                // If no instance exists, find one in the scene or create a new one
                 instance = FindObjectOfType<UIManager>();
 
                 if (instance == null)
                 {
-                    // If no instance exists in the scene,u7 create a new GameObject and attach the singleton script
                     GameObject singletonObject = new GameObject("UIManager");
                     instance = singletonObject.AddComponent<UIManager>();
                 }
@@ -52,6 +55,7 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
+        MenuCanvas.SetActive(false);
         WinCanvas.SetActive(false);
         LoseCanvas.SetActive(false);
         InGameCanvas.SetActive(false);
@@ -62,14 +66,17 @@ public class UIManager : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.Escape))
         {
-            if(Showmode)
+            if(Menushow)
             {
-                Showmode = false;
+                MenuCanvas.SetActive(false);
+                Menushow = false;
+                Time.timeScale = speedmode;
             }
-            else if(!Showmode)
+            else if(!Menushow)
             {
-                InGameCanvas.SetActive(false) ;
-                Showmode = true;
+                MenuCanvas.SetActive(true) ;
+                Time.timeScale = 0;
+                Menushow = true;
             }
 
         }

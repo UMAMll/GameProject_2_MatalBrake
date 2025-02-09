@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ChestScript : MonoBehaviour
 {
-    
+#if UNITY_EDITOR
     public void Showchest(GameObject chest)
     {
         chest.SetActive(true);
@@ -131,4 +131,5 @@ public class ChestScript : MonoBehaviour
             }
         }
     }
+#endif
 }
